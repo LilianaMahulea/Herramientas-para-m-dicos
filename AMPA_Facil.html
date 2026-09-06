@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f766e">
+<title>AMPA Fácil</title>
+<style>
+:root{--teal:#0f766e;--navy:#0f172a;--muted:#64748b;--bg:#f8fafc;--line:#e2e8f0;--warn:#9a3412;--ok:#166534}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--navy)}
+header{background:linear-gradient(135deg,#0f766e,#0ea5a4);color:white;padding:20px}
+header h1{margin:0 0 4px;font-size:26px} header p{margin:0;font-size:14px;opacity:.92}
+main{max-width:860px;margin:auto;padding:14px 14px 60px}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.protocol{background:#ecfeff;border-color:#a5f3fc}.alert{background:#fff7ed;border-color:#fdba74}
+h2{font-size:18px;margin:0 0 10px}.note{font-size:13px;line-height:1.45;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.measure{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+label{display:block;font-size:12px;font-weight:800;color:var(--muted);margin:7px 0 4px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:11px;font:inherit;background:white}
+button{border:0;border-radius:11px;padding:10px 13px;font:inherit;font-weight:800;cursor:pointer}
+.primary{background:var(--teal);color:white}.secondary{background:#e2e8f0;color:var(--navy)}.danger{background:#fee2e2;color:#991b1b}.ghost{background:white;border:1px solid #99f6e4;color:var(--teal)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:13px;padding:11px;text-align:center}.stat b{font-size:22px;display:block}.stat span{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px 5px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}.scroll{overflow:auto}
+.status{font-weight:800}.status.ok{color:var(--ok)}.status.warn{color:var(--warn)}
+.small{font-size:11px;color:var(--muted)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.measure{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:390px){.measure{grid-template-columns:1fr}}
+@media print{header,#entry,.actions,.privacy,.protocol{display:none!important}body{background:white}.card{border-color:#ddd}}
+</style>
+</head>
+<body>
+<header><h1>AMPA Fácil</h1><p>Registro educativo de automedidas domiciliarias de presión arterial</p></header>
+<main>
+<section class="card protocol">
+<h2>Cómo medir</h2>
+<div class="note">Usa un dispositivo validado. Reposa 5 minutos sentado, con espalda y brazo apoyados. Realiza <b>2 lecturas</b> separadas 1–2 minutos, <b>mañana y tarde/noche</b>, durante al menos 3 días e idealmente 7. Registra todas las lecturas y revisa la media con tu profesional sanitario.</div>
+</section>
+
+<section id="entry" class="card">
+<h2>Nueva sesión</h2>
+<div class="grid"><div><label>Fecha</label><input id="date" type="date"></div><div><label>Momento</label><select id="period"><option>Mañana</option><option>Tarde/noche</option></select></div></div>
+<label>Lectura 1</label>
+<div class="measure"><input id="s1" type="number" placeholder="PAS mmHg"><input id="d1" type="number" placeholder="PAD mmHg"><input id="p1" type="number" placeholder="FC lpm"></div>
+<label>Lectura 2 <span class="small">(1–2 min después)</span></label>
+<div class="measure"><input id="s2" type="number" placeholder="PAS mmHg"><input id="d2" type="number" placeholder="PAD mmHg"><input id="p2" type="number" placeholder="FC lpm"></div>
+<label>Comentario opcional <span class="small">No introduzcas nombre, DNI, CIP ni otros identificadores.</span></label>
+<textarea id="note" rows="2"></textarea>
+<div class="actions" style="margin-top:11px"><button class="primary" id="save">Guardar sesión</button><button class="secondary" id="clearForm">Limpiar</button></div>
+<div id="msg" class="note" style="margin-top:8px"></div>
+</section>
+
+<section class="card">
+<h2>Resumen</h2>
+<div class="stats">
+<div class="stat"><b id="avgSys">—</b><span>PAS media</span></div>
+<div class="stat"><b id="avgDia">—</b><span>PAD media</span></div>
+<div class="stat"><b id="avgPulse">—</b><span>FC media</span></div>
+<div class="stat"><b id="days">0</b><span>días</span></div>
+</div>
+<p id="status" class="status note"></p><p id="complete" class="note"></p>
+</section>
+
+<section class="card">
+<h2>Registro</h2>
+<div class="scroll"><table><thead><tr><th>Fecha</th><th>Momento</th><th>L1</th><th>L2</th><th>Media</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="actions" style="margin-top:11px">
+<button class="ghost" id="csv">Exportar CSV</button>
+<button class="ghost" onclick="window.print()">Imprimir / PDF</button>
+<button class="secondary" id="demo">Cargar datos demo</button>
+<button class="danger" id="deleteAll">Borrar todo</button>
+</div>
+</section>
+
+<section class="card alert">
+<h2>Interpretación prudente</h2>
+<div class="note" style="color:#7c2d12">Esta herramienta <b>no diagnostica ni ajusta tratamiento</b>. Una media domiciliaria ≥135/85 mmHg es un umbral diagnóstico utilizado en guías europeas y debe interpretarse en contexto clínico.</div>
+</section>
+
+<section class="card privacy">
+<h2>Privacidad</h2>
+<div class="note">Los datos se intentan guardar solo en este navegador mediante almacenamiento local. Si el navegador lo bloquea, la herramienta seguirá funcionando durante la sesión pero no conservará las medidas al cerrar la página.</div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const KEY='ampa_facil_web_v2';
+let memory=[];
+function loadStore(){try{const x=localStorage.getItem(KEY);return x?JSON.parse(x):[]}catch(e){return memory}}
+function saveStore(x){memory=x;try{localStorage.setItem(KEY,JSON.stringify(x));return true}catch(e){return false}}
+let sessions=loadStore();
+$('date').value=new Date().toISOString().slice(0,10);
+const num=id=>{const v=Number($(id).value);return Number.isFinite(v)?v:null};
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const fmt=x=>x==null?'—':Math.round(x);
+function valid(s,d,p){return s>=70&&s<=250&&d>=40&&d<=150&&s>d&&p>=30&&p<=220}
+function readings(){const a=[];sessions.forEach(x=>{a.push(x.r1,x.r2)});return a}
+function render(){
+ const rs=readings(), as=avg(rs.map(x=>x.s)), ad=avg(rs.map(x=>x.d)), ap=avg(rs.map(x=>x.p));
+ $('avgSys').textContent=fmt(as);$('avgDia').textContent=fmt(ad);$('avgPulse').textContent=fmt(ap);
+ const days=[...new Set(sessions.map(x=>x.date))];$('days').textContent=days.length;
+ $('complete').textContent=sessions.length?`${sessions.length} sesiones registradas en ${days.length} días. Idealmente completa mañana y tarde/noche durante 7 días.`:'Aún no hay medidas registradas.';
+ const st=$('status');st.className='status note';
+ if(as!=null){if(as>=135||ad>=85){st.textContent='Media ≥135/85 mmHg: conviene revisarla con un profesional sanitario.';st.classList.add('warn')}else{st.textContent='Media por debajo de 135/85 mmHg. Esto no sustituye la valoración clínica.';st.classList.add('ok')}}else st.textContent='';
+ $('rows').innerHTML=sessions.map(x=>{const ms=Math.round((x.r1.s+x.r2.s)/2),md=Math.round((x.r1.d+x.r2.d)/2);return `<tr><td>${x.date}</td><td>${x.period}</td><td>${x.r1.s}/${x.r1.d}</td><td>${x.r2.s}/${x.r2.d}</td><td><b>${ms}/${md}</b></td><td><button class="danger" data-id="${x.id}" style="padding:4px 7px">×</button></td></tr>`}).join('');
+ document.querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{sessions=sessions.filter(x=>x.id!==Number(b.dataset.id));saveStore(sessions);render()}));
+}
+$('save').addEventListener('click',()=>{
+ const r1={s:num('s1'),d:num('d1'),p:num('p1')},r2={s:num('s2'),d:num('d2'),p:num('p2')};
+ if(!valid(r1.s,r1.d,r1.p)||!valid(r2.s,r2.d,r2.p)){$('msg').textContent='Revisa las dos lecturas y la frecuencia cardiaca.';return}
+ sessions.push({id:Date.now(),date:$('date').value,period:$('period').value,r1,r2,note:$('note').value.trim()});
+ const persisted=saveStore(sessions);$('msg').textContent=persisted?'Sesión guardada en este dispositivo.':'Sesión guardada temporalmente; el navegador no permite almacenamiento persistente.';
+ ['s1','d1','p1','s2','d2','p2','note'].forEach(id=>$(id).value='');render();
+});
+$('clearForm').addEventListener('click',()=>['s1','d1','p1','s2','d2','p2','note'].forEach(id=>$(id).value=''));
+$('demo').addEventListener('click',()=>{
+ const base=new Date();sessions=[];const vals=[[136,84,134,82],[132,81,130,80],[138,86,135,84],[129,79,131,80],[134,83,133,82],[128,78,130,79]];
+ for(let i=0;i<3;i++){const dt=new Date(base);dt.setDate(base.getDate()-2+i);const ds=dt.toISOString().slice(0,10);['Mañana','Tarde/noche'].forEach((period,j)=>{const v=vals[i*2+j];sessions.push({id:Date.now()+i*3+j,date:ds,period,r1:{s:v[0],d:v[1],p:70+i},r2:{s:v[2],d:v[3],p:69+i},note:'Demo'})})}
+ saveStore(sessions);render();
+});
+$('deleteAll').addEventListener('click',()=>{if(confirm('¿Borrar todas las medidas?')){sessions=[];saveStore(sessions);render()}});
+$('csv').addEventListener('click',()=>{
+ const rows=[['fecha','momento','PAS1','PAD1','FC1','PAS2','PAD2','FC2','nota'],...sessions.map(x=>[x.date,x.period,x.r1.s,x.r1.d,x.r1.p,x.r2.s,x.r2.d,x.r2.p,x.note])];
+ const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='AMPA_facil.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+render();
+</script>
+</body></html>
