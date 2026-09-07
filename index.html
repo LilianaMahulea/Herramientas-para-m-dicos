@@ -1,22 +1,245 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Regalos del taller de IA</title>
+<html lang="es"<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Materiales del taller de IA</title>
+<meta name="author" content="Liliana Bilbie Lupchian">
+<meta name="copyright" content="© 2026 Liliana Bilbie Lupchian">
+
 <style>
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#f8fafc;color:#0f172a}
-header{padding:46px 20px;background:linear-gradient(135deg,#0f766e,#0ea5a4);color:white;text-align:center}
-h1{margin:0 0 8px;font-size:38px}header p{margin:0;font-size:18px;opacity:.94}
-main{max-width:980px;margin:auto;padding:28px 16px 60px}.intro{font-size:16px;color:#475569;text-align:center;margin-bottom:24px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{background:white;border:1px solid #dbe4ea;border-radius:22px;padding:22px}
-.card h2{margin:0 0 7px;color:#0f766e}.card p{color:#475569;line-height:1.5}.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
-a{display:inline-block;text-decoration:none;border-radius:12px;padding:11px 14px;font-weight:800}.open{background:#0f766e;color:white}.download{border:1px solid #99f6e4;color:#0f766e;background:white}
-.note{margin-top:25px;padding:16px;border-radius:16px;background:#fff7ed;border:1px solid #fdba74;color:#7c2d12;font-size:14px;line-height:1.45}
-@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
-</style></head><body>
-<header><h1>Regalos del taller de IA</h1><p>Dos herramientas sencillas que puedes usar y modificar</p></header>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:#f8fafc;
+  color:#0f172a
+}
+
+header{
+  padding:46px 20px;
+  background:linear-gradient(135deg,#0f766e,#0ea5a4);
+  color:white;
+  text-align:center
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:38px
+}
+
+header p{
+  margin:0;
+  font-size:18px;
+  opacity:.94
+}
+
+main{
+  max-width:1180px;
+  margin:auto;
+  padding:28px 16px 60px
+}
+
+.intro{
+  font-size:16px;
+  color:#475569;
+  text-align:center;
+  margin-bottom:24px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px
+}
+
+.card{
+  background:white;
+  border:1px solid #dbe4ea;
+  border-radius:22px;
+  padding:22px
+}
+
+.card.featured{
+  border:2px solid #0f766e;
+  background:#f0fdfa
+}
+
+.card h2{
+  margin:0 0 7px;
+  color:#0f766e
+}
+
+.card p{
+  color:#475569;
+  line-height:1.5
+}
+
+.badge{
+  display:inline-block;
+  margin-bottom:12px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#ccfbf1;
+  color:#0f766e;
+  font-size:12px;
+  font-weight:800
+}
+
+.buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:18px
+}
+
+a{
+  display:inline-block;
+  text-decoration:none;
+  border-radius:12px;
+  padding:11px 14px;
+  font-weight:800
+}
+
+.open{
+  background:#0f766e;
+  color:white
+}
+
+.download{
+  border:1px solid #99f6e4;
+  color:#0f766e;
+  background:white
+}
+
+.note{
+  margin-top:25px;
+  padding:16px;
+  border-radius:16px;
+  background:#fff7ed;
+  border:1px solid #fdba74;
+  color:#7c2d12;
+  font-size:14px;
+  line-height:1.45
+}
+
+.author{
+  margin-top:28px;
+  text-align:center;
+  color:#64748b;
+  font-size:13px;
+  line-height:1.5
+}
+
+@media(max-width:900px){
+  .grid{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:700px){
+  h1{
+    font-size:30px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Materiales del taller de IA</h1>
+  <p>Casos prácticos, prompts y herramientas para utilizar en consulta</p>
+</header>
+
 <main>
-<p class="intro">No necesitas instalar nada para probarlas. Puedes abrirlas aquí mismo en el navegador o descargar el archivo HTML para conservarlo en tu ordenador.</p>
+
+<p class="intro">
+Aquí encontrarás los casos de uso trabajados durante el taller y dos herramientas prácticas.
+Puedes abrirlos directamente en el navegador.
+</p>
+
 <div class="grid">
-<section class="card"><h2>AMPA Fácil</h2><p>Registro educativo de automedidas domiciliarias de presión arterial: dos lecturas por sesión, medias, días registrados, CSV e informe imprimible.</p><div class="buttons"><a class="open" href="AMPA_Facil.html">Abrir en navegador</a><a class="download" href="AMPA_Facil.html" download>Descargar HTML</a></div></section>
-<section class="card"><h2>Calculadoras AP</h2><p>IMC, cintura/talla, FIB-4, FLI, HSI, VAI y TyG en un único archivo HTML que también funciona sin conexión.</p><div class="buttons"><a class="open" href="Calculadoras_AP.html">Abrir en navegador</a><a class="download" href="Calculadoras_AP.html" download>Descargar HTML</a></div></section>
+
+<section class="card featured">
+  <span class="badge">CASOS DEL TALLER</span>
+  <h2>IA en consulta</h2>
+
+  <p>
+  Casos prácticos paso a paso: qué opción utilizar, qué prompt escribir
+  y ejemplos del resultado final. Incluye consulta compleja, búsqueda,
+  investigación avanzada, Work, informes médicos, revisión de medicación,
+  material para pacientes y creación de herramientas.
+  </p>
+
+  <div class="buttons">
+    <a class="open" href="IA_en_consulta_casos_practicos_v2.html">
+      Explorar casos prácticos
+    </a>
+  </div>
+</section>
+
+
+<section class="card">
+  <h2>AMPA Fácil</h2>
+
+  <p>
+  Registro educativo de automedidas domiciliarias de presión arterial:
+  dos lecturas por sesión, medias, días registrados, CSV e informe imprimible.
+  </p>
+
+  <div class="buttons">
+    <a class="open" href="AMPA_Facil.html">
+      Abrir en navegador
+    </a>
+
+    <a class="download" href="AMPA_Facil.html" download>
+      Descargar HTML
+    </a>
+  </div>
+</section>
+
+
+<section class="card">
+  <h2>Calculadoras AP</h2>
+
+  <p>
+  IMC, cintura/talla, FIB-4, FLI, HSI, VAI y TyG en un único archivo HTML
+  que también funciona sin conexión.
+  </p>
+
+  <div class="buttons">
+    <a class="open" href="Calculadoras_AP.html">
+      Abrir en navegador
+    </a>
+
+    <a class="download" href="Calculadoras_AP.html" download>
+      Descargar HTML
+    </a>
+  </div>
+</section>
+
 </div>
-<div class="note"><b>Uso docente.</b> Son ejemplos de cómo convertir una necesidad clínica en una herramienta digital sencilla. No son productos sanitarios certificados y los resultados deben revisarse antes de utilizarlos en la práctica clínica.</div>
-</main></body></html>
+
+
+<div class="note">
+  <b>Uso docente.</b>
+  Los materiales y herramientas son ejemplos educativos.
+  No son productos sanitarios certificados y los resultados deben revisarse
+  antes de utilizarlos en la práctica clínica.
+</div>
+
+
+<div class="author">
+  <b>© 2026 Liliana Bilbie Lupchian</b><br>
+  Material docente para uso personal de los asistentes.<br>
+  Se permite utilizar los prompts y ejemplos para la práctica personal.
+  No se autoriza la redistribución o reutilización del conjunto como material docente
+  sin permiso de la autora.
+</div>
+
+</main>
+
+</body>
+</html>
