@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="author" content="Liliana Bilbie Lupchian">
+<title>Exploración AP · Musculoesquelético</title>
+<style>
+:root{
+  --green:#0f766e;--green2:#0b5f59;--mint:#e8f5f2;--mint2:#f3fbf9;
+  --ink:#17212b;--muted:#66727d;--line:#d8e1e5;--bg:#f6f8fa;
+  --amber:#fff7ed;--amberLine:#fdba74;--red:#b42318;--softred:#fff1f1;
+  --blue:#2563eb;--softblue:#edf4ff;--white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+header{
+  background:linear-gradient(135deg,var(--green2),#0ea5a4);color:white;
+  padding:24px 18px 20px;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px #0002
+}
+.header-inner{max-width:1250px;margin:auto;display:flex;gap:20px;align-items:flex-start;justify-content:space-between}
+h1{margin:0;font-size:clamp(24px,3vw,34px);line-height:1.12}
+.subtitle{margin:6px 0 0;color:#ddfffb;font-size:14px;line-height:1.4;max-width:850px}
+.source-badge{white-space:nowrap;background:#ffffff1c;border:1px solid #ffffff55;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800}
+main{max-width:1250px;margin:auto;padding:18px 14px 70px}
+.notice{background:var(--amber);border:1px solid var(--amberLine);border-radius:14px;padding:11px 14px;color:#7c2d12;font-size:13px;line-height:1.45;margin-bottom:14px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.btn{border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;padding:9px 12px;font-weight:800;cursor:pointer}
+.btn:hover{border-color:#aab6bd}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn.danger{color:var(--red);border-color:#efb7b1}
+.grid{display:grid;grid-template-columns:315px minmax(0,1fr);gap:14px;align-items:start}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 20px #17212b0b}
+.left{padding:14px;position:sticky;top:126px}
+.left h2,.content h2{margin:0 0 10px;color:var(--green);font-size:18px}
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--muted);margin:14px 0 7px}
+.region-list{display:grid;gap:6px}
+.region-btn{width:100%;border:1px solid var(--line);background:#fff;text-align:left;padding:10px 11px;border-radius:11px;cursor:pointer;color:var(--ink);font-weight:750}
+.region-btn.active{background:var(--mint);border-color:#abd8d1;color:var(--green2)}
+.region-btn small{display:block;color:var(--muted);font-weight:500;margin-top:2px}
+.content{padding:16px}
+.card{border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:12px;background:#fff}
+.card.soft{background:var(--mint2)}
+.card h3{margin:0 0 10px;font-size:16px;color:var(--green2)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+.key-data{display:inline-block;margin-left:5px;padding:2px 6px;border-radius:999px;background:#fff3cd;color:#7c5b00;font-size:10px;font-weight:900;vertical-align:1px}
+input.field-error{border-color:#dc2626!important;box-shadow:0 0 0 3px #fee2e2!important}
+label{display:block;font-size:12px;font-weight:850;color:#475569;margin-bottom:5px}
+input[type=text],input[type=number],select,textarea{
+ width:100%;border:1px solid #cbd5db;border-radius:9px;background:white;padding:9px 10px;color:var(--ink);outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:#56aaa1;box-shadow:0 0 0 3px #d9f1ed}
+textarea{min-height:74px;resize:vertical}
+.seg{display:flex;flex-wrap:wrap;gap:5px}
+.seg button{border:1px solid var(--line);background:white;border-radius:9px;padding:7px 9px;font-size:12px;font-weight:800;cursor:pointer}
+.seg button[data-state="yes"].on,.seg button[data-state="pos"].on,.seg button[data-state="altered"].on{background:var(--softred);border-color:#e7a6a0;color:#9b2218}
+.seg button[data-state="no"].on,.seg button[data-state="neg"].on,.seg button[data-state="normal"].on{background:var(--mint);border-color:#9bcfc7;color:var(--green2)}
+.item{border-top:1px dashed #dce4e8;padding:9px 0}
+.item:first-child{border-top:0}
+.item-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+.item-title{font-size:13px;font-weight:800;color:#334155}
+.item small{display:block;color:var(--muted);font-size:11px;margin-top:2px;line-height:1.35}
+.item-note{margin-top:6px}
+.result{position:sticky;bottom:10px;border:2px solid #90c9c2;box-shadow:0 10px 35px #17212b20}
+.result textarea{min-height:185px;font-size:14px;line-height:1.45;background:#fbfffe}
+.result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.status{font-size:12px;color:var(--muted);margin-left:auto;align-self:center}
+.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:900;background:var(--mint);color:var(--green2)}
+.redflag{background:var(--softred);border-color:#efc1bd}
+.redflag h3{color:var(--red)}
+.sources{font-size:12px;line-height:1.55;color:#475569}
+.sources a{color:var(--green2)}
+.privacy{display:flex;gap:8px;align-items:center;font-size:12px;color:#475569}
+.dot{width:8px;height:8px;border-radius:50%;background:#16a34a;flex:none}
+.footer{margin-top:16px;text-align:center;color:#78838d;font-size:11px;line-height:1.55}
+.hidden{display:none!important}
+@media(max-width:900px){
+  header{position:relative}
+  .header-inner{display:block}.source-badge{display:inline-block;margin-top:10px}
+  .grid{grid-template-columns:1fr}.left{position:relative;top:auto}
+  .region-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .result{position:relative;bottom:auto}
+}
+@media(max-width:620px){
+  main{padding:10px 8px 50px}.content,.left{padding:11px}.fields{grid-template-columns:1fr}
+  .region-list{grid-template-columns:1fr 1fr}.region-btn{padding:9px;font-size:13px}
+  .item-head{grid-template-columns:1fr}.seg{margin-top:3px}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+  <div>
+    <h1>Exploración AP · Musculoesquelético</h1>
+    <p class="subtitle">Herramienta de documentación clínica: anamnesis + exploración estructurada → texto listo para revisar y copiar en la historia clínica.</p>
+  </div>
+  <div class="source-badge">Harrison 22e · Merck · SECOT</div>
+</div>
+</header>
+
+<main>
+<div class="notice"><b>Importante.</b> Esta herramienta no diagnostica ni recomienda tratamiento. Solo transforma los datos que el profesional consigna en texto clínico. Los campos sin marcar se omiten: nunca se asume una exploración “normal” ni un síntoma “ausente” si el profesional no lo ha seleccionado.</div>
+
+<div class="toolbar">
+  <button class="btn primary" id="generateTop">Generar texto</button>
+  <button class="btn" id="copyTop">Copiar</button>
+  <button class="btn danger" id="clearAll">Limpiar todo</button>
+  <span class="privacy"><span class="dot"></span> No guarda ni envía los datos introducidos · procesamiento local</span>
+</div>
+
+<div class="grid">
+  <aside class="panel left">
+    <h2>Motivo / región</h2>
+    <div class="section-label">Plantillas frecuentes</div>
+    <div class="region-list" id="regionList"></div>
+    <div class="section-label">Regla de documentación</div>
+    <div style="font-size:12px;color:#52606b;line-height:1.5">
+      <b>Sin marcar</b> = no aparece en el texto generado. Para desmarcar una opción, púlsala de nuevo.
+    </div>
+  </aside>
+
+  <section class="panel content">
+    <div id="templateTitle" style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:12px"></div>
+
+    <div class="card" id="secotScalesCard" style="padding:10px 14px">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="badge">SECOT</span>
+        <span style="font-size:12px;color:#475569"><b>Escalas complementarias:</b> <span id="secotScales"></span></span>
+      </div>
+    </div>
+
+    <div class="card soft">
+      <h3>1 · Anamnesis</h3>
+      <div class="fields">
+        <div class="field"><label>Tiempo de evolución <span class="key-data">dato clave</span></label><input id="duration" type="text" placeholder="p. ej., 3 días, 2 semanas, desde ayer"></div>
+        <div class="field"><label>Inicio</label>
+          <select id="onset"><option value="">—</option><option>Brusco</option><option>Progresivo</option><option>Tras sobreesfuerzo</option><option>Tras traumatismo</option></select>
+        </div>
+        <div class="field"><label>Localización</label><input id="location" type="text" placeholder="p. ej., región anterolateral del muslo, interlínea articular medial"></div>
+        <div class="field"><label>Irradiación (si existe)</label><input id="radiation" type="text" placeholder="p. ej., hasta el tobillo, a miembro inferior, hacia el hombro"></div>
+        <div class="field"><label>Carácter del dolor</label><input id="painChar" type="text" placeholder="mecánico, continuo, punzante, quemante…"></div>
+        <div class="field"><label>Intensidad (EVA 0–10)</label><input id="painScore" type="number" min="0" max="10" step="1" placeholder="0–10"></div>
+        <div class="field"><label>Desencadenantes</label><input id="worse" type="text" placeholder="el movimiento, la sedestación, la carga, un gesto concreto…"></div>
+        <div class="field"><label>Mejora con</label><input id="better" type="text" placeholder="reposo, movimiento, analgesia…"></div>
+        <div class="field"><label>Limitación funcional</label><input id="function" type="text" placeholder="caminar, vestirse, subir escaleras…"></div>
+        <div class="field"><label>Episodios previos / antecedentes relevantes</label><input id="history" type="text" placeholder="no / episodio similar previo / cirugía / artrosis / traumatismos…"></div>
+        <div class="field full"><label>Observaciones de anamnesis</label><textarea id="historyNotes" placeholder="Datos que no encajan en los campos anteriores"></textarea></div>
+      </div>
+    </div>
+
+    <div class="card" id="historyItemsCard">
+      <h3>2 · Síntomas asociados y datos dirigidos</h3>
+      <div id="historyItems"></div>
+    </div>
+
+    <div class="card redflag" id="redFlagCard">
+      <h3>3 · Datos de alarma / contexto relevante</h3>
+      <div id="redFlagItems"></div>
+      <div style="font-size:11px;color:#8d3b34;margin-top:8px">Registrar estos datos no implica un diagnóstico. Su interpretación corresponde al profesional.</div>
+    </div>
+
+    <div class="card">
+      <h3>4 · Exploración física</h3>
+      <div id="examItems"></div>
+      <div class="field full" style="margin-top:10px"><label>Otros hallazgos de exploración</label><textarea id="examNotes" placeholder="Añade aquí cualquier hallazgo no incluido"></textarea></div>
+    </div>
+
+    <div class="card result">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <h3 style="margin:0">Texto generado</h3><span class="badge">REVISAR ANTES DE COPIAR</span><span style="font-size:11px;color:#64748b">Normalización local de gramática y puntuación; el texto libre mantiene control del profesional.</span>
+      </div>
+      <textarea id="output" placeholder="Pulsa «Generar texto»."></textarea>
+      <div class="result-actions">
+        <button class="btn primary" id="generate">Generar texto</button>
+        <button class="btn" id="copy">Copiar a portapapeles</button>
+        <button class="btn" id="clearOutput">Borrar texto</button>
+        <span class="status" id="status"></span>
+      </div>
+    </div>
+
+    <div class="card sources">
+      <h3>Fuentes y alcance</h3>
+      <p><b>Base clínica:</b> estructura sintetizada a partir de <i>Harrison. Principios de Medicina Interna, 22e</i>, cap. 382, “Estudio de los trastornos articulares y musculoesqueléticos”, y <i>Merck Manual Professional</i>, “Evaluation of the Patient With Joint Symptoms” y exploraciones regionales. Es una adaptación propia para documentación en Atención Primaria; no reproduce literalmente los manuales.</p>
+      <p>Como referencia complementaria de valoración funcional se incorpora la página de <b>escalas de valoración de la Sociedad Española de Cirugía Ortopédica y Traumatología (SECOT)</b>. Las escalas SECOT se muestran como apoyo complementario; no se utilizan como fuente de las maniobras de exploración física ni se calculan automáticamente en esta versión.</p>
+      <p>
+        <a href="https://accessmedicina.mhmedical.com/content.aspx?bookid=3553&sectionid=295887281" target="_blank" rel="noopener">Harrison 22e · cap. 382</a> ·
+        <a href="https://www.merckmanuals.com/professional/musculoskeletal-and-connective-tissue-disorders/approach-to-the-patient-with-joint-symptoms/evaluation-of-the-patient-with-joint-symptoms" target="_blank" rel="noopener">Merck Manual Professional · evaluación articular</a> ·
+        <a href="https://www.secot.es/escalas-valoracion" target="_blank" rel="noopener">SECOT · escalas de valoración</a>
+      </p>
+    </div>
+
+    <div class="footer">© 2026 Liliana Bilbie Lupchian · Material docente. Herramienta de apoyo a la documentación clínica. No sustituye anamnesis, exploración física, juicio clínico ni protocolos locales.</div>
+  </section>
+</div>
+</main>
+
+<script>
+const templates = {
+ lumbar: {
+  name:"Lumbar", sub:"Lumbalgia / lumbociatalgia",
+  history:[
+   ["radleg","Dolor irradiado a miembro inferior","yesno"],
+   ["parest","Parestesias / hipoestesia","yesno"],
+   ["weak","Sensación de pérdida de fuerza","yesno"],
+   ["night","Dolor nocturno no relacionado con postura","yesno"],
+   ["stiff","Rigidez matutina prolongada","yesno"]
+  ],
+  red:[
+   ["trauma","Traumatismo relevante","yesno"],
+   ["fever","Fiebre o escalofríos","yesno"],
+   ["cancer","Antecedente oncológico o pérdida de peso inexplicada","yesno"],
+   ["immuno","Riesgo de infección (inmunosupresión, infección o cirugía reciente)","yesno"],
+   ["sph","Retención urinaria o incontinencia urinaria/fecal de nueva aparición","yesno"],
+   ["saddle","Anestesia en silla de montar","yesno"],
+   ["prog","Déficit neurológico progresivo","yesno"]
+  ],
+  exam:[
+   ["inspect","Inspección / alineación","normalalt","p. ej., actitud antiálgica, escoliosis, deformidad"],
+   ["palp","Palpación lumbar / paravertebral","normalalt","dolor localizado, contractura"],
+   ["flex","Flexión lumbar","normalalt","conservada / limitada / dolorosa"],
+   ["ext","Extensión lumbar","normalalt","conservada / limitada / dolorosa"],
+   ["slr","Lasègue / elevación pierna recta","posneg","indicar lado y ángulo si procede"],
+   ["cross","Lasègue contralateral","posneg","si se realiza"],
+   ["strength","Fuerza de miembros inferiores","normalalt","especificar grupo y escala si alterada"],
+   ["sens","Sensibilidad de miembros inferiores","normalalt","distribución si alterada"],
+   ["reflex","Reflejos rotuliano y aquíleo","normalalt","simétricos / alterados"],
+   ["gait","Marcha","normalalt","incluye talones/puntas si se explora"]
+  ]
+ },
+ cervical: {
+  name:"Cervical", sub:"Cervicalgia / cervicobraquialgia",
+  history:[
+   ["arm","Irradiación a miembro superior","yesno"],["parest","Parestesias en miembro superior","yesno"],
+   ["weak","Pérdida de fuerza / torpeza manual","yesno"],["head","Cefalea asociada","yesno"],
+   ["night","Dolor nocturno no postural","yesno"]
+  ],
+  red:[
+   ["trauma","Traumatismo relevante","yesno"],
+   ["fever","Fiebre o escalofríos / riesgo de infección","yesno"],
+   ["cancer","Antecedente oncológico o pérdida de peso inexplicada","yesno"],
+   ["myel","Alteración de la marcha, equilibrio o torpeza manual de nueva aparición","yesno"],
+   ["prog","Déficit motor o sensitivo progresivo en miembros superiores o inferiores","yesno"],
+   ["sph","Alteración esfinteriana de nueva aparición","yesno"],
+   ["mening","Cefalea intensa de nueva aparición, rigidez de nuca o meningismo","yesno"]
+  ],
+  exam:[
+   ["inspect","Inspección / alineación cervical","normalalt","postura, deformidad"],
+   ["palp","Palpación cervical y trapecios","normalalt","dolor / contractura"],
+   ["rom","Movilidad cervical global","normalalt","flexión, extensión, rotación e inclinación"],
+   ["spurl","Spurling","posneg","si se realiza; indicar lado"],
+   ["strength","Fuerza de miembros superiores","normalalt","especificar distribución si alterada"],
+   ["sens","Sensibilidad de miembros superiores","normalalt","dermatomas / territorio si procede"],
+   ["reflex","Reflejos bicipital, tricipital y estilorradial","normalalt","simetría / alteraciones"],
+   ["gait","Marcha","normalalt","si existe sospecha mielopática"]
+  ]
+ },
+ shoulder: {
+  name:"Hombro", sub:"Hombro doloroso / lesión traumática",
+  history:[
+   ["trauma","Inicio tras traumatismo","yesno"],["overhead","Empeora con movimientos por encima de la cabeza","yesno"],
+   ["night","Dolor nocturno","yesno"],["weak","Debilidad referida","yesno"],
+   ["neck","Cervicalgia / irradiación distal asociada","yesno"]
+  ],
+  red:[
+   ["deform","Traumatismo importante o deformidad","yesno"],
+   ["fever","Fiebre con articulación caliente, eritematosa o muy inflamada","yesno"],
+   ["neuro","Déficit neurovascular distal","yesno"],
+   ["unable","Incapacidad funcional aguda marcada tras traumatismo","yesno"]
+  ],
+  exam:[
+   ["inspect","Inspección comparativa","normalalt","asimetría, atrofia, deformidad"],
+   ["palp","Palpación: AC, corredera bicipital, tuberosidad mayor","normalalt","precisar punto doloroso"],
+   ["active","Movilidad activa","normalalt","flexión, abducción, rotaciones"],
+   ["passive","Movilidad pasiva","normalalt","comparar con activa"],
+   ["arc","Arco doloroso","posneg","si se realiza"],
+   ["neer","Neer","posneg","si se realiza"],
+   ["hawkins","Hawkins-Kennedy","posneg","si se realiza"],
+   ["jobe","Jobe / empty can","posneg","si se realiza"],
+   ["er","Rotación externa contra resistencia","normalalt","dolor / debilidad"],
+   ["subscap","Lift-off o belly-press","posneg","según maniobra realizada"],
+   ["speed","Speed","posneg","si se realiza"]
+  ]
+ },
+ elbow: {
+  name:"Codo", sub:"Epicondilalgia / epitroclealgia / dolor de codo",
+  history:[
+   ["overuse","Relacionado con sobreuso / gesto repetitivo","yesno"],["trauma","Antecedente traumático","yesno"],
+   ["parest","Parestesias en 4.º–5.º dedos","yesno"],["lock","Bloqueo / chasquido mecánico","yesno"]
+  ],
+  red:[["deform","Traumatismo importante o deformidad","yesno"],["fever","Fiebre con articulación caliente, eritematosa o muy inflamada","yesno"],["neuro","Déficit neurovascular distal","yesno"]],
+  exam:[
+   ["inspect","Inspección","normalalt","deformidad, eritema, tumefacción"],
+   ["palp","Palpación epicóndilo / epitróclea / olécranon","normalalt","precisar punto doloroso"],
+   ["rom","Flexo-extensión y prono-supinación","normalalt","dolor / limitación"],
+   ["resExt","Extensión de muñeca contra resistencia","posneg","dolor lateral si se realiza"],
+   ["resFlex","Flexión de muñeca contra resistencia","posneg","dolor medial si se realiza"],
+   ["tinel","Tinel sobre nervio cubital","posneg","si se realiza"]
+  ]
+ },
+ hand: {
+  name:"Muñeca y mano", sub:"Dolor de muñeca / túnel carpiano / De Quervain",
+  history:[
+   ["trauma","Traumatismo","yesno"],["parest","Parestesias / adormecimiento","yesno"],
+   ["night","Síntomas nocturnos","yesno"],["grip","Pérdida de fuerza de prensión","yesno"],
+   ["repeat","Relacionado con movimientos repetitivos","yesno"]
+  ],
+  red:[["deform","Traumatismo importante o deformidad","yesno"],["fever","Fiebre con articulación caliente, eritematosa o muy inflamada","yesno"],["vascular","Déficit neurovascular distal o cambios de coloración/perfusión","yesno"]],
+  exam:[
+   ["inspect","Inspección mano y muñeca","normalalt","tumefacción, deformidad, atrofia tenar"],
+   ["palp","Palpación ósea y tendinosa","normalalt","precisar localización"],
+   ["rom","Movilidad de muñeca y dedos","normalalt","activa / pasiva"],
+   ["grip","Fuerza de prensión / pinza","normalalt","comparativa"],
+   ["tinel","Tinel en túnel carpiano","posneg","si se realiza"],
+   ["phalen","Phalen","posneg","si se realiza"],
+   ["finkel","Finkelstein","posneg","si se realiza"],
+   ["nv","Exploración neurovascular distal","normalalt","sensibilidad / perfusión"]
+  ]
+ },
+ hip: {
+  name:"Cadera", sub:"Coxalgia / dolor trocantérico",
+  history:[
+   ["groin","Dolor inguinal","yesno"],["lateral","Dolor lateral / trocantérico","yesno"],
+   ["walk","Empeora con marcha o carga","yesno"],["side","Dolor al decúbito lateral","yesno"],
+   ["back","Lumbalgia / irradiación asociada","yesno"]
+  ],
+  red:[["trauma","Traumatismo o caída relevante","yesno"],["bear","Incapacidad para la carga","yesno"],["fever","Fiebre con dolor articular intenso o síntomas sistémicos","yesno"]],
+  exam:[
+   ["gait","Marcha","normalalt","antiálgica / Trendelenburg si se valora"],
+   ["palp","Palpación trocánter mayor y región inguinal","normalalt","dolor localizado"],
+   ["active","Movilidad activa","normalalt","flexión, extensión, rotaciones"],
+   ["passive","Movilidad pasiva","normalalt","especialmente rotación interna"],
+   ["faber","FABER","posneg","si se realiza"],
+   ["fadir","FADIR","posneg","si se realiza"],
+   ["trend","Trendelenburg","posneg","si se realiza"]
+  ]
+ },
+ knee: {
+  name:"Rodilla", sub:"Gonalgia / lesión traumática",
+  history:[
+   ["trauma","Traumatismo / giro","yesno"],["swelling","Derrame / hinchazón referida","yesno"],
+   ["lock","Bloqueo","yesno"],["give","Sensación de fallo / inestabilidad","yesno"],
+   ["stairs","Dolor con escaleras / cuclillas","yesno"],["night","Dolor nocturno","yesno"]
+  ],
+  red:[["bear","Incapacidad para la carga","yesno"],["fever","Fiebre con articulación caliente, eritematosa o muy inflamada","yesno"],["deform","Traumatismo importante o deformidad","yesno"],["nv","Déficit neurovascular distal","yesno"]],
+  exam:[
+   ["inspect","Inspección / alineación","normalalt","tumefacción, deformidad, atrofia"],
+   ["eff","Derrame","posneg","baloteo / onda si se realiza"],
+   ["palp","Palpación líneas articulares, rótula y tendones","normalalt","precisar punto doloroso"],
+   ["rom","Flexo-extensión activa y pasiva","normalalt","rango y dolor"],
+   ["lach","Lachman","posneg","si se realiza"],
+   ["ant","Cajón anterior","posneg","si se realiza"],
+   ["post","Cajón posterior","posneg","si se realiza"],
+   ["varus","Estrés en varo","posneg","si se realiza"],
+   ["valgus","Estrés en valgo","posneg","si se realiza"],
+   ["mcm","McMurray","posneg","si se realiza"],
+   ["gait","Marcha","normalalt","si procede"]
+  ]
+ },
+ ankle: {
+  name:"Tobillo y pie", sub:"Esguince / dolor de pie / fascitis plantar",
+  history:[
+   ["trauma","Mecanismo traumático","yesno"],["twist","Inversión / eversión","yesno"],
+   ["bear","Dificultad para apoyar / caminar","yesno"],["swelling","Edema / equimosis","yesno"],
+   ["morning","Dolor plantar en primeros pasos","yesno"]
+  ],
+  red:[["deform","Traumatismo importante o deformidad","yesno"],["bear","Incapacidad para apoyar o caminar","yesno"],["fever","Fiebre con articulación caliente, eritematosa o muy inflamada","yesno"],["nv","Déficit neurovascular distal","yesno"]],
+  exam:[
+   ["inspect","Inspección","normalalt","edema, equimosis, deformidad"],
+   ["malleoli","Palpación maleolar","normalalt","medial / lateral"],
+   ["footbones","Palpación navicular y base del 5.º metatarsiano","normalalt","si procede"],
+   ["rom","Movilidad de tobillo","normalalt","flexión dorsal/plantar, inversión/eversión"],
+   ["drawer","Cajón anterior de tobillo","posneg","si se realiza"],
+   ["tilt","Talar tilt / inclinación astragalina","posneg","si se realiza"],
+   ["thompson","Thompson","posneg","si se realiza"],
+   ["plantar","Palpación fascia plantar / tubérculo calcáneo medial","normalalt","si dolor plantar"],
+   ["nv","Exploración neurovascular distal","normalalt","perfusión / sensibilidad"]
+  ]
+ }
+};
+
+let current="lumbar";
+const states={};
+const regionForms={};
+const regionFieldIds=[
+ "duration","onset","location","radiation","painChar","painScore",
+ "worse","better","function","history","historyNotes","examNotes"
+];
+
+function saveRegionForm(region=current){
+ const data={};
+ regionFieldIds.forEach(id=>{
+   const el=document.getElementById(id);
+   if(el) data[id]=el.value;
+ });
+ regionForms[region]=data;
+}
+
+function loadRegionForm(region=current){
+ const data=regionForms[region]||{};
+ regionFieldIds.forEach(id=>{
+   const el=document.getElementById(id);
+   if(el) el.value=data[id] ?? "";
+ });
+ // El texto generado nunca se arrastra entre regiones.
+ const out=document.getElementById("output");
+ if(out) out.value="";
+}
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
+function titleCase(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function stateKey(kind,id){return current+"::"+kind+"::"+id}
+function getState(kind,id){return states[stateKey(kind,id)]||{state:"",note:""}}
+function setState(kind,id,state){const k=stateKey(kind,id);states[k]=states[k]||{note:""};states[k].state=state}
+function setNote(kind,id,note){const k=stateKey(kind,id);states[k]=states[k]||{state:""};states[k].note=note}
+
+function renderRegions(){
+ const box=document.getElementById("regionList");box.innerHTML="";
+ Object.entries(templates).forEach(([key,t])=>{
+   const b=document.createElement("button"); b.className="region-btn"+(key===current?" active":"");
+   b.innerHTML=`${esc(t.name)}<small>${esc(t.sub)}</small>`;
+   b.onclick=()=>{
+     if(key===current) return;
+     saveVisibleNotes();
+     saveRegionForm(current);
+     current=key;
+     renderAll();
+   };
+   box.appendChild(b);
+ });
+}
+function segButtons(kind,id,type){
+ const s=getState(kind,id).state;
+ let opts= type==="yesno" ? [["yes","Sí"],["no","No"]] :
+           type==="posneg" ? [["pos","Positivo"],["neg","Negativo"]] :
+                            [["normal","Normal"],["altered","Alterado"]];
+ return `<div class="seg">${opts.map(o=>`<button type="button" data-kind="${kind}" data-id="${id}" data-state="${o[0]}" class="${s===o[0]?"on":""}">${o[1]}</button>`).join("")}</div>`;
+}
+function renderItems(containerId,items,kind){
+ const c=document.getElementById(containerId); c.innerHTML="";
+ items.forEach(([id,label,type,hint])=>{
+   const st=getState(kind,id);
+   const div=document.createElement("div");div.className="item";
+   div.innerHTML=`<div class="item-head"><div class="item-title">${esc(label)}${hint?`<small>${esc(hint)}</small>`:""}</div>${segButtons(kind,id,type)}</div>
+   <div class="item-note"><input type="text" data-note-kind="${kind}" data-note-id="${id}" value="${esc(st.note||"")}" placeholder="Detalle opcional"></div>`;
+   c.appendChild(div);
+ });
+ c.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
+   saveRegionForm(current);
+   const currentState=getState(b.dataset.kind,b.dataset.id).state;
+   setState(b.dataset.kind,b.dataset.id,currentState===b.dataset.state?"":b.dataset.state);
+   renderAll(false);
+ });
+ c.querySelectorAll("input[data-note-id]").forEach(inp=>inp.addEventListener("input",()=>setNote(inp.dataset.noteKind,inp.dataset.noteId,inp.value)));
+}
+const secotScalesByRegion={
+ lumbar:["Oswestry"],
+ cervical:["INDI / discapacidad cervical","Nurick (si mielopatía)"],
+ shoulder:["DASH","Constant","Rowe","Simple Shoulder Test"],
+ elbow:["Mayo Elbow","Oxford de codo"],
+ hand:["DASH"],
+ hip:["Harris modificada","Merle d’Aubigné","Oxford de cadera","Lequesne","WOMAC"],
+ knee:["WOMAC"],
+ ankle:["CAIT","AOFAS"]
+};
+
+const regionFieldHints={
+ lumbar:{
+  location:"región lumbar central, paravertebral derecha/izquierda…",
+  radiation:"cara posterior del muslo hasta el pie, miembro inferior derecho…",
+  painChar:"mecánico, punzante, quemante, eléctrico…",
+  worse:"la sedestación, la bipedestación, la flexión, la carga…",
+  better:"el reposo, el cambio postural, el calor local…",
+  function:"caminar, permanecer sentado, agacharse, subir y bajar escaleras…",
+  history:"no / episodios previos / cirugía lumbar / traumatismo…",
+  historyNotes:"p. ej., evolución durante el día, repercusión laboral, otros datos relevantes",
+  examNotes:"p. ej., contractura paravertebral, actitud antiálgica, lateralidad del hallazgo"
+ },
+ cervical:{
+  location:"región cervical posterior, paravertebral, trapecio derecho/izquierdo…",
+  radiation:"hombro y brazo, antebrazo, hasta los dedos…",
+  painChar:"mecánico, punzante, quemante, eléctrico…",
+  worse:"la rotación cervical, la extensión, el trabajo mantenido, determinadas posturas…",
+  better:"el reposo, el cambio postural, el calor local…",
+  function:"girar la cabeza, conducir, trabajar con ordenador, dormir…",
+  history:"no / episodios previos / traumatismo cervical / cirugía…",
+  historyNotes:"p. ej., relación con actividad laboral, cefalea asociada, evolución",
+  examNotes:"p. ej., contractura de trapecio, limitación dolorosa de rotación, lateralidad"
+ },
+ shoulder:{
+  location:"cara anterolateral del hombro, región subacromial, articulación AC…",
+  radiation:"cara lateral del brazo, hacia el codo…",
+  painChar:"mecánico, punzante, sordo, nocturno…",
+  worse:"la elevación del brazo, los movimientos por encima de la cabeza, vestirse…",
+  better:"el reposo, evitar la elevación, analgesia…",
+  function:"peinarse, vestirse, alcanzar objetos, dormir sobre ese lado…",
+  history:"no / sobreuso / traumatismo / luxación previa / cirugía…",
+  historyNotes:"p. ej., dominancia, actividad laboral/deportiva, dolor nocturno",
+  examNotes:"p. ej., punto doloroso, arco doloroso, rango limitado, lateralidad"
+ },
+ elbow:{
+  location:"epicóndilo lateral, epitróclea, olécranon…",
+  radiation:"antebrazo, muñeca, 4.º–5.º dedos…",
+  painChar:"mecánico, localizado, punzante, quemante…",
+  worse:"la prensión, cargar peso, extensión o flexión de muñeca, gesto repetitivo…",
+  better:"el reposo, evitar el gesto desencadenante…",
+  function:"coger objetos, abrir recipientes, trabajar con herramientas…",
+  history:"no / sobreuso / traumatismo / episodio similar previo…",
+  historyNotes:"p. ej., actividad laboral/deportiva, lado dominante",
+  examNotes:"p. ej., dolor epicondíleo a la palpación, limitación, lateralidad"
+ },
+ hand:{
+  location:"cara volar de muñeca, borde radial, base del pulgar, dedos…",
+  radiation:"pulgar, índice y medio; antebrazo; 4.º–5.º dedos…",
+  painChar:"quemante, eléctrico, mecánico, punzante…",
+  worse:"movimientos repetitivos, pinza, prensión, desviación cubital…",
+  better:"reposo, férula, cambio de actividad…",
+  function:"escribir, abrocharse, abrir recipientes, sujetar objetos…",
+  history:"no / traumatismo / sobreuso / cirugía / episodio previo…",
+  historyNotes:"p. ej., predominio nocturno, mano dominante, distribución de parestesias",
+  examNotes:"p. ej., atrofia tenar, punto doloroso, déficit sensitivo, lateralidad"
+ },
+ hip:{
+  location:"ingle, región trocantérica, glútea…",
+  radiation:"cara anterior del muslo, rodilla, región glútea…",
+  painChar:"mecánico, profundo, sordo, punzante…",
+  worse:"la marcha, subir escaleras, levantarse de una silla, decúbito lateral…",
+  better:"el reposo, disminuir la carga, cambio de postura…",
+  function:"caminar, calzarse, subir escaleras, levantarse de una silla…",
+  history:"no / artrosis / traumatismo / prótesis / cirugía…",
+  historyNotes:"p. ej., distancia de marcha, uso de ayudas, dolor nocturno",
+  examNotes:"p. ej., dolor trocantérico, rotación interna limitada, marcha antiálgica"
+ },
+ knee:{
+  location:"interlínea medial/lateral, región anterior, perirrotuliana, hueco poplíteo…",
+  radiation:"muslo distal, pierna proximal…",
+  painChar:"mecánico, punzante, sordo, sensación de presión…",
+  worse:"la carga, subir o bajar escaleras, cuclillas, giros…",
+  better:"el reposo, evitar carga, frío local…",
+  function:"caminar, subir y bajar escaleras, ponerse en cuclillas, levantarse…",
+  history:"no / traumatismo o giro / artrosis / cirugía / episodio previo…",
+  historyNotes:"p. ej., derrame, bloqueo, inestabilidad, chasquidos",
+  examNotes:"p. ej., dolor en interlínea, derrame, rango de movilidad, lateralidad"
+ },
+ ankle:{
+  location:"maléolo lateral/medial, región anterolateral, mediopié, talón, fascia plantar…",
+  radiation:"dorso o borde lateral del pie, pantorrilla…",
+  painChar:"mecánico, punzante, sordo, quemante…",
+  worse:"la carga, caminar, inversión/eversión, primeros pasos de la mañana…",
+  better:"el reposo, descarga, frío local…",
+  function:"apoyar, caminar, subir escaleras, ponerse de puntillas…",
+  history:"no / esguinces previos / traumatismo / cirugía…",
+  historyNotes:"p. ej., mecanismo lesional, capacidad inmediata para caminar, edema",
+  examNotes:"p. ej., edema, equimosis, dolor maleolar, apoyo, lateralidad"
+ }
+};
+
+function applyRegionHints(){
+ const h=regionFieldHints[current]||{};
+ const fixed={
+   duration:"p. ej., 3 días, 2 semanas, desde ayer",
+   painScore:"0–10"
+ };
+ const map={
+   duration:"duration",location:"location",radiation:"radiation",painChar:"painChar",
+   worse:"worse",better:"better",function:"function",history:"history",
+   historyNotes:"historyNotes",examNotes:"examNotes",painScore:"painScore"
+ };
+ Object.entries(map).forEach(([key,id])=>{
+   const el=document.getElementById(id);
+   if(!el) return;
+   const ph=fixed[key] || h[key] || "";
+   el.placeholder=ph;
+ });
+}
+function renderTitle(){
+ const t=templates[current];
+ document.getElementById("templateTitle").innerHTML=`<span class="badge">${esc(t.name.toUpperCase())}</span><strong style="font-size:20px">${esc(t.sub)}</strong>`;
+ const scales=secotScalesByRegion[current]||[];
+ document.getElementById("secotScales").textContent=scales.length?scales.join(" · "):"consultar repertorio SECOT";
+}
+function renderAll(resetScroll=true){
+ renderRegions();renderTitle();applyRegionHints();
+ const t=templates[current];
+ renderItems("historyItems",t.history,"history");
+ renderItems("redFlagItems",t.red,"red");
+ renderItems("examItems",t.exam,"exam");
+ loadRegionForm(current);
+ if(resetScroll && window.innerWidth<900) document.querySelector(".content").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function saveVisibleNotes(){
+ document.querySelectorAll("input[data-note-id]").forEach(inp=>setNote(inp.dataset.noteKind,inp.dataset.noteId,inp.value));
+}
+function val(id){return document.getElementById(id).value.trim()}
+function joinSentence(parts){return parts.filter(Boolean).join(". ").replace(/\.\./g,".")+(parts.filter(Boolean).length?".":"")}
+function addDetail(base,note){
+ if(!note) return base;
+ return `${base} (${note})`;
+}
+
+const historyFragments={
+ lumbar:{
+  radleg:{pos:"irradiación del dolor a miembro inferior",neg:"irradiación del dolor a miembro inferior"},
+  parest:{pos:"parestesias o hipoestesia",neg:"parestesias ni hipoestesia"},
+  weak:{pos:"sensación de pérdida de fuerza",neg:"sensación de pérdida de fuerza"},
+  night:{pos:"dolor nocturno no relacionado con la postura",neg:"dolor nocturno no relacionado con la postura"},
+  stiff:{pos:"rigidez matutina prolongada",neg:"rigidez matutina prolongada"}
+ },
+ cervical:{
+  arm:{pos:"irradiación a miembro superior",neg:"irradiación a miembro superior"},
+  parest:{pos:"parestesias en miembro superior",neg:"parestesias en miembro superior"},
+  weak:{pos:"pérdida de fuerza o torpeza manual",neg:"pérdida de fuerza ni torpeza manual"},
+  head:{pos:"cefalea asociada",neg:"cefalea asociada"},
+  night:{pos:"dolor nocturno no postural",neg:"dolor nocturno no postural"}
+ },
+ shoulder:{
+  trauma:{pos:"inicio tras traumatismo",neg:"relación con traumatismo"},
+  overhead:{pos:"dolor con movimientos por encima de la cabeza",neg:"dolor con movimientos por encima de la cabeza"},
+  night:{pos:"dolor nocturno",neg:"dolor nocturno"},
+  weak:{pos:"debilidad",neg:"debilidad"},
+  neck:{pos:"cervicalgia o irradiación distal",neg:"cervicalgia ni irradiación distal"}
+ },
+ elbow:{
+  overuse:{pos:"relación con sobreuso o gesto repetitivo",neg:"relación con sobreuso o gesto repetitivo"},
+  trauma:{pos:"antecedente traumático",neg:"antecedente traumático"},
+  parest:{pos:"parestesias en 4.º–5.º dedos",neg:"parestesias en 4.º–5.º dedos"},
+  lock:{pos:"bloqueo o chasquido mecánico",neg:"bloqueo ni chasquido mecánico"}
+ },
+ hand:{
+  trauma:{pos:"antecedente traumático",neg:"antecedente traumático"},
+  parest:{pos:"parestesias o adormecimiento",neg:"parestesias ni adormecimiento"},
+  night:{pos:"síntomas nocturnos",neg:"síntomas nocturnos"},
+  grip:{pos:"pérdida de fuerza de prensión",neg:"pérdida de fuerza de prensión"},
+  repeat:{pos:"relación con movimientos repetitivos",neg:"relación con movimientos repetitivos"}
+ },
+ hip:{
+  groin:{pos:"dolor inguinal",neg:"dolor inguinal"},
+  lateral:{pos:"dolor lateral o trocantérico",neg:"dolor lateral ni trocantérico"},
+  walk:{pos:"dolor con la marcha o la carga",neg:"dolor con la marcha ni con la carga"},
+  side:{pos:"dolor con el decúbito lateral",neg:"dolor con el decúbito lateral"},
+  back:{pos:"lumbalgia o irradiación",neg:"lumbalgia ni irradiación"}
+ },
+ knee:{
+  trauma:{pos:"antecedente de traumatismo o giro",neg:"antecedente de traumatismo ni giro"},
+  swelling:{pos:"derrame o hinchazón",neg:"derrame ni hinchazón"},
+  lock:{pos:"bloqueo",neg:"bloqueo"},
+  give:{pos:"sensación de fallo o inestabilidad",neg:"sensación de fallo ni inestabilidad"},
+  stairs:{pos:"dolor con escaleras o cuclillas",neg:"dolor con escaleras ni cuclillas"},
+  night:{pos:"dolor nocturno",neg:"dolor nocturno"}
+ },
+ ankle:{
+  trauma:{pos:"mecanismo traumático",neg:"mecanismo traumático"},
+  twist:{pos:"mecanismo de inversión o eversión",neg:"mecanismo de inversión ni eversión"},
+  bear:{pos:"dificultad para apoyar o caminar",neg:"dificultad para apoyar ni caminar"},
+  swelling:{pos:"edema o equimosis",neg:"edema ni equimosis"},
+  morning:{pos:"dolor plantar con los primeros pasos",neg:"dolor plantar con los primeros pasos"}
+ }
+};
+
+function trimClinical(s){
+ return String(s||"").trim().replace(/[.;,\s]+$/,"");
+}
+function lowerFirst(s){
+ const x=trimClinical(s); return x?x.charAt(0).toLowerCase()+x.slice(1):"";
+}
+function upperFirst(s){
+ const x=trimClinical(s); return x?x.charAt(0).toUpperCase()+x.slice(1):"";
+}
+function naturalListY(items){
+ const a=items.filter(Boolean);
+ if(a.length<=1) return a[0]||"";
+ if(a.length===2) return `${a[0]} y ${a[1]}`;
+ return `${a.slice(0,-1).join(", ")} y ${a[a.length-1]}`;
+}
+function naturalListNi(items){
+ const a=items.filter(Boolean);
+ if(a.length<=1) return a[0]||"";
+ if(a.length===2) return `${a[0]} ni ${a[1]}`;
+ return `${a[0]}, ni ${a.slice(1).join(", ni ")}`;
+}
+function addDetail(base,note){
+ if(!note) return base;
+ return `${base} (${trimClinical(note)})`;
+}
+function irradiationText(rad){
+ const r=trimClinical(rad);
+ if(!r) return "";
+ if(/^(a|al|a la|a los|a las|hacia|hasta|por|desde|en)\b/i.test(r)) return `con irradiación ${r}`;
+ return `con irradiación a ${r}`;
+}
+function negativeHistoryValue(v){
+ return /^(no|ningun[oa]?|ninguno de interés|no refiere|niega|sin antecedentes|sin episodios previos)$/i.test(trimClinical(v));
+}
+function historyFragment(id,label,state,note){
+ const item=historyFragments[current]?.[id];
+ let text=item ? item[state==="yes"?"pos":"neg"] : label.toLowerCase();
+ if(note) text += ` (${trimClinical(note)})`;
+ return text;
+}
+
+function buildHistorySymptoms(items,radiationFreeText){
+ const positives=[];
+ const negatives=[];
+ items.forEach(([id,label])=>{
+   const st=getState("history",id);
+   if(!st.state) return;
+   if(radiationFreeText && ((current==="lumbar" && id==="radleg") || (current==="cervical" && id==="arm"))) return;
+   const fragment=historyFragment(id,label,st.state,st.note);
+   if(st.state==="yes") positives.push(fragment);
+   if(st.state==="no") negatives.push(fragment);
+ });
+ const out=[];
+ if(positives.length) out.push(`Refiere ${naturalListY(positives)}.`);
+ if(negatives.length) out.push(`No refiere ${naturalListNi(negatives)}.`);
+ return out.join(" ");
+}
+
+function durationClause(value){
+ const x=trimClinical(value);
+ if(!x) return "";
+ if(/^desde\b/i.test(x)) return ` ${x.toLowerCase()}`;
+ if(/^hace\s+/i.test(x)) return ` de ${x.replace(/^hace\s+/i,"")} de evolución`;
+ if(/\bde evolución$/i.test(x)) return ` de ${x.replace(/^de\s+/i,"")}`;
+ return ` de ${x} de evolución`;
+}
+
+function buildCoreHistory(){
+ const d=trimClinical(val("duration"));
+ const onset=trimClinical(val("onset"));
+ const loc=trimClinical(val("location"));
+ const rad=trimClinical(val("radiation"));
+ const pc=trimClinical(val("painChar"));
+ const ps=trimClinical(val("painScore"));
+ const w=trimClinical(val("worse"));
+ const b=trimClinical(val("better"));
+ const fn=trimClinical(val("function"));
+ const hist=trimClinical(val("history"));
+ const hn=trimClinical(val("historyNotes"));
+
+ const sentences=[];
+ let first="Consulta por dolor";
+ if(d) first += durationClause(d);
+ if(onset) first += `, de inicio ${onset.toLowerCase()}`;
+ if(loc) first += `, localizado en ${loc}`;
+ if(rad) first += `, ${irradiationText(rad)}`;
+ if(pc) first += `, de carácter ${pc}`;
+ sentences.push(`${first}.`);
+
+ if(ps) sentences.push(`EVA ${ps}/10.`);
+
+ const wNatural=addArticlesToSimpleList(w);
+ const bNatural=addArticlesToSimpleList(b);
+ if(wNatural && bNatural) sentences.push(`Se desencadena con ${wNatural} y mejora con ${bNatural}.`);
+ else if(wNatural) sentences.push(`Se desencadena con ${wNatural}.`);
+ else if(bNatural) sentences.push(`Mejora con ${bNatural}.`);
+
+ if(fn) sentences.push(`Presenta limitación funcional para ${fn}.`);
+
+ const directed=buildHistorySymptoms(templates[current].history,rad);
+ if(directed) sentences.push(directed);
+
+ if(hist){
+   if(negativeHistoryValue(hist)) sentences.push("No refiere antecedentes ni episodios previos relevantes.");
+   else sentences.push(`Como antecedentes o episodios previos relevantes, refiere ${hist}.`);
+ }
+ if(hn) sentences.push(`${hn}.`);
+
+ return sentences.join(" ").replace(/\s+/g," ").trim();
+}
+
+function cleanAlarmLabel(label){
+ const map={
+  "Fiebre / síndrome febril":"fiebre o síndrome febril",
+  "Antecedente oncológico relevante":"antecedente oncológico relevante",
+  "Inmunosupresión / infección reciente relevante":"inmunosupresión o infección reciente relevante",
+  "Alteración esfinteriana nueva":"alteración esfinteriana de nueva aparición",
+  "Anestesia en silla de montar":"anestesia en silla de montar",
+  "Déficit neurológico progresivo":"déficit neurológico progresivo",
+  "Fiebre o escalofríos":"fiebre o escalofríos",
+  "Antecedente oncológico o pérdida de peso inexplicada":"antecedente oncológico o pérdida de peso inexplicada",
+  "Riesgo de infección (inmunosupresión, infección o cirugía reciente)":"riesgo de infección",
+  "Retención urinaria o incontinencia urinaria/fecal de nueva aparición":"retención urinaria o incontinencia urinaria/fecal de nueva aparición",
+  "Fiebre o escalofríos / riesgo de infección":"fiebre, escalofríos o riesgo de infección",
+  "Alteración de la marcha, equilibrio o torpeza manual de nueva aparición":"alteración de la marcha, equilibrio o torpeza manual de nueva aparición",
+  "Déficit motor o sensitivo progresivo en miembros superiores o inferiores":"déficit motor o sensitivo progresivo en miembros superiores o inferiores",
+  "Cefalea intensa de nueva aparición, rigidez de nuca o meningismo":"cefalea intensa de nueva aparición, rigidez de nuca o meningismo",
+  "Traumatismo importante o deformidad":"traumatismo importante o deformidad",
+  "Fiebre con articulación caliente, eritematosa o muy inflamada":"fiebre con articulación caliente, eritematosa o muy inflamada",
+  "Déficit neurovascular distal":"déficit neurovascular distal",
+  "Incapacidad funcional aguda marcada tras traumatismo":"incapacidad funcional aguda marcada tras traumatismo",
+  "Déficit neurovascular distal o cambios de coloración/perfusión":"déficit neurovascular distal o cambios de coloración/perfusión",
+  "Traumatismo o caída relevante":"traumatismo o caída relevante",
+  "Fiebre con dolor articular intenso o síntomas sistémicos":"fiebre con dolor articular intenso o síntomas sistémicos",
+  "Incapacidad para la carga":"incapacidad para la carga",
+  "Incapacidad para apoyar o caminar":"incapacidad para apoyar o caminar",
+  "Traumatismo relevante":"traumatismo relevante",
+  "Alteración nueva de la marcha":"alteración de nueva aparición de la marcha",
+  "Deformidad tras traumatismo":"deformidad tras traumatismo",
+  "Fiebre / síntomas sistémicos":"fiebre o síntomas sistémicos",
+  "Déficit neurovascular referido":"déficit neurovascular",
+  "Fiebre / inflamación intensa":"fiebre o inflamación intensa",
+  "Cambios vasculares / coloración referidos":"cambios vasculares o de coloración",
+  "Incapacidad para carga":"incapacidad para la carga",
+  "Fiebre / articulación muy caliente":"fiebre o articulación muy caliente",
+  "Traumatismo / caída":"traumatismo o caída",
+  "Síntomas neurovasculares distales":"síntomas neurovasculares distales",
+  "Deformidad":"deformidad"
+ };
+ return map[label]||label.toLowerCase();
+}
+function buildAlarmText(items){
+ const selected=items.map(([id,label])=>({id,label,state:getState("red",id).state,note:getState("red",id).note})).filter(x=>x.state);
+ if(!selected.length) return "";
+ const positives=selected.filter(x=>x.state==="yes");
+ const negatives=selected.filter(x=>x.state==="no");
+ const allAnswered=selected.length===items.length;
+
+ if(!positives.length && allAnswered){
+   return `Sin signos de alarma (${naturalListY(items.map(([,label])=>cleanAlarmLabel(label)))})`;
+ }
+ const parts=[];
+ if(positives.length){
+   parts.push(`Presenta ${naturalListY(positives.map(x=>addDetail(cleanAlarmLabel(x.label),x.note)))}`);
+ }
+ if(negatives.length){
+   parts.push(`No presenta ${naturalListNi(negatives.map(x=>cleanAlarmLabel(x.label)))}`);
+ }
+ return parts.join(". ");
+}
+
+const examPhrases={
+ lumbar:{
+  inspect:{normal:"inspección y alineación sin alteraciones",altered:"inspección y alineación alteradas"},
+  palp:{normal:"palpación lumbar y paravertebral no dolorosa, sin otros hallazgos",altered:"palpación lumbar alterada"},
+  flex:{normal:"flexión lumbar conservada",altered:"flexión lumbar alterada"},
+  ext:{normal:"extensión lumbar conservada",altered:"extensión lumbar alterada"},
+  slr:{pos:"Lasègue positivo",neg:"Lasègue negativo"},
+  cross:{pos:"Lasègue contralateral positivo",neg:"Lasègue contralateral negativo"},
+  strength:{normal:"fuerza conservada en miembros inferiores",altered:"fuerza alterada en miembros inferiores"},
+  sens:{normal:"sensibilidad conservada en miembros inferiores",altered:"sensibilidad alterada en miembros inferiores"},
+  reflex:{normal:"reflejos rotulianos y aquíleos conservados y simétricos",altered:"reflejos rotulianos o aquíleos alterados"},
+  gait:{normal:"marcha normal",altered:"marcha alterada"}
+ },
+ cervical:{
+  inspect:{normal:"inspección y alineación cervical sin alteraciones",altered:"inspección y alineación cervical alteradas"},
+  palp:{normal:"palpación cervical y de trapecios no dolorosa, sin otros hallazgos",altered:"palpación cervical o de trapecios alterada"},
+  rom:{normal:"movilidad cervical conservada",altered:"movilidad cervical alterada"},
+  spurl:{pos:"Spurling positivo",neg:"Spurling negativo"},
+  strength:{normal:"fuerza conservada en miembros superiores",altered:"fuerza alterada en miembros superiores"},
+  sens:{normal:"sensibilidad conservada en miembros superiores",altered:"sensibilidad alterada en miembros superiores"},
+  reflex:{normal:"reflejos bicipitales, tricipitales y estilorradiales conservados y simétricos",altered:"reflejos osteotendinosos de miembros superiores alterados"},
+  gait:{normal:"marcha normal",altered:"marcha alterada"}
+ },
+ shoulder:{
+  inspect:{normal:"inspección comparativa sin alteraciones",altered:"inspección comparativa alterada"},
+  palp:{normal:"palpación acromioclavicular, de la corredera bicipital y de la tuberosidad mayor no dolorosa",altered:"palpación del hombro alterada"},
+  active:{normal:"movilidad activa conservada",altered:"movilidad activa alterada"},
+  passive:{normal:"movilidad pasiva conservada",altered:"movilidad pasiva alterada"},
+  arc:{pos:"arco doloroso positivo",neg:"arco doloroso negativo"},
+  neer:{pos:"Neer positivo",neg:"Neer negativo"},
+  hawkins:{pos:"Hawkins-Kennedy positivo",neg:"Hawkins-Kennedy negativo"},
+  jobe:{pos:"Jobe positivo",neg:"Jobe negativo"},
+  er:{normal:"rotación externa contra resistencia conservada",altered:"rotación externa contra resistencia alterada"},
+  subscap:{pos:"lift-off/belly-press positivo",neg:"lift-off/belly-press negativo"},
+  speed:{pos:"Speed positivo",neg:"Speed negativo"}
+ },
+ elbow:{
+  inspect:{normal:"inspección del codo sin alteraciones",altered:"inspección del codo alterada"},
+  palp:{normal:"palpación de epicóndilo, epitróclea y olécranon no dolorosa",altered:"palpación del codo alterada"},
+  rom:{normal:"flexoextensión y pronosupinación conservadas",altered:"flexoextensión o pronosupinación alteradas"},
+  resExt:{pos:"dolor con la extensión de muñeca contra resistencia",neg:"sin dolor con la extensión de muñeca contra resistencia"},
+  resFlex:{pos:"dolor con la flexión de muñeca contra resistencia",neg:"sin dolor con la flexión de muñeca contra resistencia"},
+  tinel:{pos:"Tinel cubital positivo",neg:"Tinel cubital negativo"}
+ },
+ hand:{
+  inspect:{normal:"inspección de mano y muñeca sin alteraciones",altered:"inspección de mano o muñeca alterada"},
+  palp:{normal:"palpación ósea y tendinosa no dolorosa",altered:"palpación ósea o tendinosa alterada"},
+  rom:{normal:"movilidad de muñeca y dedos conservada",altered:"movilidad de muñeca o dedos alterada"},
+  grip:{normal:"fuerza de prensión y pinza conservadas",altered:"fuerza de prensión o pinza alterada"},
+  tinel:{pos:"Tinel en túnel carpiano positivo",neg:"Tinel en túnel carpiano negativo"},
+  phalen:{pos:"Phalen positivo",neg:"Phalen negativo"},
+  finkel:{pos:"Finkelstein positivo",neg:"Finkelstein negativo"},
+  nv:{normal:"exploración neurovascular distal conservada",altered:"exploración neurovascular distal alterada"}
+ },
+ hip:{
+  gait:{normal:"marcha normal",altered:"marcha alterada"},
+  palp:{normal:"palpación del trocánter mayor y de la región inguinal no dolorosa",altered:"palpación de cadera alterada"},
+  active:{normal:"movilidad activa de cadera conservada",altered:"movilidad activa de cadera alterada"},
+  passive:{normal:"movilidad pasiva de cadera conservada",altered:"movilidad pasiva de cadera alterada"},
+  faber:{pos:"FABER positivo",neg:"FABER negativo"},
+  fadir:{pos:"FADIR positivo",neg:"FADIR negativo"},
+  trend:{pos:"Trendelenburg positivo",neg:"Trendelenburg negativo"}
+ },
+ knee:{
+  inspect:{normal:"inspección y alineación de la rodilla sin alteraciones",altered:"inspección o alineación de la rodilla alterada"},
+  eff:{pos:"derrame articular presente",neg:"sin derrame articular"},
+  palp:{normal:"palpación de interlíneas articulares, rótula y tendones no dolorosa",altered:"palpación de la rodilla alterada"},
+  rom:{normal:"flexoextensión activa y pasiva conservada",altered:"flexoextensión alterada"},
+  lach:{pos:"Lachman positivo",neg:"Lachman negativo"},
+  ant:{pos:"cajón anterior positivo",neg:"cajón anterior negativo"},
+  post:{pos:"cajón posterior positivo",neg:"cajón posterior negativo"},
+  varus:{pos:"estrés en varo positivo",neg:"estrés en varo negativo"},
+  valgus:{pos:"estrés en valgo positivo",neg:"estrés en valgo negativo"},
+  mcm:{pos:"McMurray positivo",neg:"McMurray negativo"},
+  gait:{normal:"marcha normal",altered:"marcha alterada"}
+ },
+ ankle:{
+  inspect:{normal:"inspección de tobillo y pie sin alteraciones",altered:"inspección de tobillo o pie alterada"},
+  malleoli:{normal:"palpación maleolar no dolorosa",altered:"palpación maleolar dolorosa o alterada"},
+  footbones:{normal:"palpación del navicular y de la base del 5.º metatarsiano no dolorosa",altered:"palpación del navicular o de la base del 5.º metatarsiano alterada"},
+  rom:{normal:"movilidad del tobillo conservada",altered:"movilidad del tobillo alterada"},
+  drawer:{pos:"cajón anterior de tobillo positivo",neg:"cajón anterior de tobillo negativo"},
+  tilt:{pos:"inclinación astragalina positiva",neg:"inclinación astragalina negativa"},
+  thompson:{pos:"Thompson positivo",neg:"Thompson negativo"},
+  plantar:{normal:"palpación de la fascia plantar y del tubérculo calcáneo medial no dolorosa",altered:"palpación de la fascia plantar o del tubérculo calcáneo medial alterada"},
+  nv:{normal:"exploración neurovascular distal conservada",altered:"exploración neurovascular distal alterada"}
+ }
+};
+
+const examGroups={
+ lumbar:[["inspect","palp","flex","ext"],["slr","cross"],["strength","sens","reflex"],["gait"]],
+ cervical:[["inspect","palp","rom"],["spurl"],["strength","sens","reflex"],["gait"]],
+ shoulder:[["inspect","palp","active","passive","er"],["arc","neer","hawkins","jobe","subscap","speed"]],
+ elbow:[["inspect","palp","rom"],["resExt","resFlex"],["tinel"]],
+ hand:[["inspect","palp","rom","grip"],["tinel","phalen","finkel"],["nv"]],
+ hip:[["palp","active","passive"],["faber","fadir","trend"],["gait"]],
+ knee:[["inspect","eff","palp","rom"],["lach","ant","post","varus","valgus","mcm"],["gait"]],
+ ankle:[["inspect","malleoli","footbones","rom","plantar"],["drawer","tilt","thompson"],["nv"]]
+};
+
+const testNames={
+ lumbar:{slr:"Lasègue",cross:"Lasègue contralateral"},
+ shoulder:{arc:"arco doloroso",neer:"Neer",hawkins:"Hawkins-Kennedy",jobe:"Jobe",subscap:"lift-off/belly-press",speed:"Speed"},
+ hand:{tinel:"Tinel",phalen:"Phalen",finkel:"Finkelstein"},
+ hip:{faber:"FABER",fadir:"FADIR",trend:"Trendelenburg"},
+ knee:{lach:"Lachman",ant:"cajón anterior",post:"cajón posterior",varus:"estrés en varo",valgus:"estrés en valgo",mcm:"McMurray"},
+ ankle:{drawer:"cajón anterior de tobillo",tilt:"inclinación astragalina",thompson:"Thompson"}
+};
+
+function integrateExamNote(base,state,note){
+ const n=trimClinical(note);
+ if(!n) return base;
+ const b=trimClinical(base);
+
+ if(state==="altered"){
+   const adjective=/^(doloros[oa]s?|limitad[oa]s?|restringid[oa]s?|disminuid[oa]s?|aumentad[oa]s?|conservad[oa]s?|antálgic[oa]s?|antiálgic[oa]s?)$/i;
+   if(adjective.test(n) && /\b(alterad[oa]s?)$/i.test(b)){
+     return b.replace(/\b(alterad[oa]s?)$/i,n.toLowerCase());
+   }
+   const stem=b.replace(/\s+(alterad[oa]s?)$/i,"");
+   if(/^con\b/i.test(n) || /^sin\b/i.test(n)) return `${stem} ${n}`;
+   if(/^(inspección|palpación)/i.test(stem)) return `${stem} con ${lowerFirst(n)}`;
+   return `${stem}: ${lowerFirst(n)}`;
+ }
+ return `${b}: ${lowerFirst(n)}`;
+}
+function examPhrase(id,label,type,state,note){
+ if(!state) return "";
+ const custom=examPhrases[current]?.[id]?.[state];
+ let text=custom;
+ if(!text){
+   if(type==="posneg") text=`${label} ${state==="pos"?"positivo":"negativo"}`;
+   else text=state==="normal"?`${label} conservado`:`${label} alterado`;
+ }
+ return integrateExamNote(text,state,note);
+}
+function examState(id){return getState("exam",id).state}
+function examNote(id){return trimClinical(getState("exam",id).note)}
+function itemType(id){
+ const item=templates[current].exam.find(x=>x[0]===id);
+ return item ? item[2] : "";
+}
+function itemLabel(id){
+ const item=templates[current].exam.find(x=>x[0]===id);
+ return item ? item[1] : id;
+}
+function isAbnormalState(s){return s==="altered" || s==="pos"}
+
+function combineRegionSpecific(ids,used,entries){
+ const index=id=>ids.indexOf(id);
+ const has=id=>ids.includes(id) && examState(id) && !used.has(id);
+ const noNote=(...x)=>x.every(id=>!examNote(id));
+ const push=(text,idsUsed,abnormal)=>{
+   entries.push({text,order:Math.min(...idsUsed.map(index)),abnormal});
+   idsUsed.forEach(x=>used.add(x));
+ };
+
+ if(current==="lumbar"){
+   if(has("palp")&&has("flex")&&has("ext")&&noNote("palp","flex","ext") &&
+      examState("palp")==="altered"&&examState("flex")==="altered"&&examState("ext")==="altered"){
+     push("palpación lumbar, flexión y extensión lumbar alteradas",["palp","flex","ext"],true);
+   } else if(has("flex")&&has("ext")&&noNote("flex","ext")&&examState("flex")===examState("ext")){
+     push(examState("flex")==="normal"?"flexión y extensión lumbar conservadas":"flexión y extensión lumbar alteradas",["flex","ext"],examState("flex")==="altered");
+   }
+   if(has("strength")&&has("sens")&&noNote("strength","sens")&&examState("strength")===examState("sens")){
+     push(examState("strength")==="normal"?"fuerza y sensibilidad conservadas en miembros inferiores":"fuerza y sensibilidad alteradas en miembros inferiores",["strength","sens"],examState("strength")==="altered");
+   }
+ }
+
+ if(current==="cervical"){
+   if(has("strength")&&has("sens")&&noNote("strength","sens")&&examState("strength")===examState("sens")){
+     push(examState("strength")==="normal"?"fuerza y sensibilidad conservadas en miembros superiores":"fuerza y sensibilidad alteradas en miembros superiores",["strength","sens"],examState("strength")==="altered");
+   }
+ }
+
+ if(current==="shoulder" || current==="hip"){
+   if(has("active")&&has("passive")&&noNote("active","passive")&&examState("active")===examState("passive")){
+     const prefix=current==="hip"?"movilidad activa y pasiva de cadera":"movilidad activa y pasiva";
+     push(`${prefix} ${examState("active")==="normal"?"conservadas":"alteradas"}`,["active","passive"],examState("active")==="altered");
+   }
+ }
+
+ if(current==="elbow" && has("resExt")&&has("resFlex")&&noNote("resExt","resFlex") &&
+    examState("resExt")==="neg"&&examState("resFlex")==="neg"){
+   push("sin dolor con la flexión ni la extensión de muñeca contra resistencia",["resExt","resFlex"],false);
+ }
+}
+
+function combineTests(ids,used,entries){
+ const names=testNames[current]||{};
+ ["pos","neg"].forEach(st=>{
+   const candidates=ids.filter(id=>names[id] && !used.has(id) && examState(id)===st && !examNote(id));
+   if(candidates.length>=2){
+     entries.push({
+       text:`${naturalListY(candidates.map(id=>names[id]))} ${st==="pos"?"positivos":"negativos"}`,
+       order:Math.min(...candidates.map(id=>ids.indexOf(id))),
+       abnormal:st==="pos"
+     });
+     candidates.forEach(id=>used.add(id));
+   }
+ });
+}
+
+function buildExamSentences(){
+ const groups=examGroups[current]||[templates[current].exam.map(x=>x[0])];
+ const sentences=[];
+
+ groups.forEach(ids=>{
+   const used=new Set();
+   const entries=[];
+
+   combineRegionSpecific(ids,used,entries);
+   combineTests(ids,used,entries);
+
+   ids.forEach((id,idx)=>{
+     if(used.has(id) || !examState(id)) return;
+     const phrase=examPhrase(id,itemLabel(id),itemType(id),examState(id),examNote(id));
+     if(!phrase) return;
+     entries.push({text:lowerFirst(phrase),order:idx,abnormal:isAbnormalState(examState(id))});
+   });
+
+   // Hallazgos alterados/positivos primero, manteniendo dentro de cada grupo el orden clínico.
+   entries.sort((a,b)=>{
+     if(a.abnormal!==b.abnormal) return a.abnormal?-1:1;
+     return a.order-b.order;
+   });
+
+   const all=entries.map(x=>x.text);
+   if(!all.length) return;
+
+   if((current==="lumbar"||current==="cervical") && ids.includes("strength") && ids.includes("reflex") &&
+      all.length===2 && /fuerza y sensibilidad conservadas/i.test(all[0]) && /reflejos/i.test(all[1])){
+     sentences.push(`${upperFirst(all[0])}, con ${lowerFirst(all[1])}.`);
+   } else {
+     sentences.push(`${upperFirst(naturalListY(all))}.`);
+   }
+ });
+ return sentences;
+}
+const articleMap={
+ "movimiento":"el movimiento","reposo":"el reposo","calor":"el calor","calor local":"el calor local",
+ "frío":"el frío","frio":"el frío","frío local":"el frío local","frio local":"el frío local",
+ "sedestación":"la sedestación","sedestacion":"la sedestación",
+ "bipedestación":"la bipedestación","bipedestacion":"la bipedestación",
+ "carga":"la carga","marcha":"la marcha","flexión":"la flexión","flexion":"la flexión",
+ "extensión":"la extensión","extension":"la extensión","rotación":"la rotación","rotacion":"la rotación",
+ "ejercicio":"el ejercicio","actividad":"la actividad","movimientos":"los movimientos"
+};
+
+function addArticlesToSimpleList(text){
+ const x=trimClinical(text);
+ if(!x) return x;
+ // No tocar frases que ya contienen determinante, preposición o verbo.
+ if(/\b(el|la|los|las|un|una|al|a la|con|sin|durante|tras|cuando|al realizar|al hacer)\b/i.test(x)) return x;
+ const parts=x.split(/\s+y\s+|\s*,\s*/i).map(s=>s.trim()).filter(Boolean);
+ if(parts.length===0) return x;
+ const converted=parts.map(p=>articleMap[p.toLowerCase()]||p);
+ return naturalListY(converted);
+}
+
+function normalizeClinicalText(text){
+ let t=String(text||"");
+ const fixes=[
+   [/\ba\s+hasta\b/gi,"hasta"],
+   [/\ba\s+hacia\b/gi,"hacia"],
+   [/\bde\s+de\b/gi,"de"],
+   [/\bcon\s+con\b/gi,"con"],
+   [/\by\s+y\b/gi,"y"],
+   [/\bni\s+ni\b/gi,"ni"],
+   [/\s+([,.;:])/g,"$1"],
+   [/([,.;:])(?=\S)/g,"$1 "],
+   [/[ \t]{2,}/g," "],
+   [/\n[ \t]+/g,"\n"],
+   [/[ \t]+\n/g,"\n"],
+   [/\n{3,}/g,"\n\n"]
+ ];
+ fixes.forEach(([rx,repl])=>{t=t.replace(rx,repl)});
+ return t.trim();
+}
+
+function build(){
+ saveVisibleNotes();
+ saveRegionForm(current);
+
+ const durationEl=document.getElementById("duration");
+ const durationValue=trimClinical(durationEl.value);
+ if(!durationValue){
+   durationEl.classList.add("field-error");
+   durationEl.focus();
+   setStatus("Indica el tiempo de evolución antes de generar el texto");
+   return;
+ }
+ durationEl.classList.remove("field-error");
+
+ const t=templates[current];
+ const anamnesis=buildCoreHistory();
+ const alarmText=buildAlarmText(t.red);
+ const examSentences=buildExamSentences();
+ const en=trimClinical(val("examNotes"));
+ if(en) examSentences.push(`${upperFirst(en)}.`);
+
+ const out=[];
+ out.push(`ANAMNESIS: ${anamnesis || "Sin datos registrados."}`);
+ if(alarmText){
+   out.push(alarmText.startsWith("Sin signos de alarma") ? `${alarmText}.` : `SIGNOS DE ALARMA: ${alarmText}.`);
+ }
+ out.push(`EXPLORACIÓN: ${examSentences.length?examSentences.join(" "):"Sin datos registrados."}`);
+ document.getElementById("output").value=normalizeClinicalText(out.join("\n\n"));
+ setStatus("Texto generado y redacción normalizada");
+}
+function clearAll(){
+ if(!confirm("¿Borrar todos los datos consignados en todas las regiones?"))return;
+ Object.keys(states).forEach(k=>delete states[k]);
+ Object.keys(regionForms).forEach(k=>delete regionForms[k]);
+ ["duration","onset","location","radiation","painChar","painScore","worse","better","function","history","historyNotes","examNotes","output"].forEach(id=>document.getElementById(id).value="");
+ renderAll(false);setStatus("Datos borrados");
+}
+function copyOutput(){
+ const o=document.getElementById("output");
+ if(!o.value.trim()){setStatus("Primero genera el texto");return}
+ navigator.clipboard?.writeText(o.value).then(()=>setStatus("Copiado")).catch(()=>{
+   o.select();document.execCommand("copy");setStatus("Copiado");
+ });
+}
+function setStatus(s){const el=document.getElementById("status");el.textContent=s;setTimeout(()=>{if(el.textContent===s)el.textContent=""},2500)}
+document.getElementById("generate").onclick=build;
+document.getElementById("generateTop").onclick=build;
+document.getElementById("copy").onclick=copyOutput;
+document.getElementById("copyTop").onclick=copyOutput;
+document.getElementById("clearAll").onclick=clearAll;
+document.getElementById("clearOutput").onclick=()=>{document.getElementById("output").value="";setStatus("Texto borrado")};
+
+// Mantiene la anamnesis propia de cada región incluso si se pulsan botones que redibujan la interfaz.
+regionFieldIds.forEach(id=>{
+ const el=document.getElementById(id);
+ if(!el) return;
+ const persist=()=>saveRegionForm(current);
+ el.addEventListener("input",persist);
+ el.addEventListener("change",persist);
+});
+document.querySelectorAll('input[type="text"], textarea').forEach(el=>{
+ el.spellcheck=true;
+ el.lang="es";
+});
+document.getElementById("duration").addEventListener("input",e=>e.target.classList.remove("field-error"));
+
+renderAll(false);
+</script>
+</body>
+</html>
