@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora clínica de diabetes</title>
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+    --text: #172033;
+    --muted: #667085;
+    --line: #dfe5ee;
+    --accent: #2457a6;
+    --accent-soft: #eaf1fb;
+    --good: #246b45;
+    --good-soft: #eaf6ef;
+    --mid: #8a6518;
+    --mid-soft: #fff7df;
+    --high: #9b3a35;
+    --high-soft: #fff0ef;
+    --info: #3b5b78;
+    --info-soft: #eef5fa;
+    --danger: #9d2b2b;
+    --shadow: 0 12px 32px rgba(31, 48, 78, .08);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .app { max-width: 1240px; margin: 0 auto; padding: 28px 18px 48px; }
+  header {
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(1.7rem, 3vw, 2.35rem); line-height: 1.1; margin: 0 0 8px; }
+  .subtitle { margin: 0; color: var(--muted); max-width: 760px; }
+  .clear-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 650;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .clear-btn:hover { border-color: #b9c5d6; background: #fbfcfe; }
+  .clear-btn:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+    outline: 3px solid rgba(36,87,166,.22);
+    outline-offset: 2px;
+  }
+
+  .privacy {
+    background: var(--accent-soft);
+    border: 1px solid #ceddf2;
+    color: #284c7a;
+    border-radius: 12px;
+    padding: 11px 14px;
+    margin-bottom: 18px;
+    font-size: .94rem;
+  }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .88fr); gap: 20px; align-items: start; }
+  .stack { display: grid; gap: 16px; }
+  .panel, .result-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .panel { padding: 20px; }
+  .panel h2 { margin: 0 0 4px; font-size: 1.12rem; }
+  .panel-intro { margin: 0 0 16px; color: var(--muted); font-size: .92rem; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+  .field { min-width: 0; }
+  label { display: block; font-weight: 650; font-size: .9rem; margin-bottom: 6px; }
+  .control-row { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
+  input, select {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #cfd7e3;
+    background: #fff;
+    border-radius: 9px;
+    padding: 9px 10px;
+    color: var(--text);
+    font: inherit;
+  }
+  .unit-select { min-width: 102px; }
+  .field small { display: block; color: var(--muted); margin-top: 5px; font-size: .78rem; }
+  .field .error { color: var(--danger); }
+  .field .warn { color: #7c5a10; }
+
+  .section-divider { height: 1px; background: var(--line); margin: 18px 0; }
+  .results-title { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin: 0 0 10px; }
+  .results-title h2 { margin: 0; font-size: 1.15rem; }
+  .results-title span { color: var(--muted); font-size: .82rem; }
+
+  .result-card { padding: 17px 18px; box-shadow: none; }
+  .result-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .result-card h3 { margin: 0; font-size: 1.05rem; }
+  .value { font-size: 1.9rem; font-weight: 760; letter-spacing: -.02em; margin: 6px 0 2px; }
+  .value.pending { color: var(--muted); font-size: 1rem; font-weight: 600; letter-spacing: 0; margin-top: 10px; }
+  .unit { font-size: .88rem; color: var(--muted); font-weight: 600; margin-left: 4px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 4px 9px;
+    font-size: .76rem;
+    font-weight: 720;
+    white-space: nowrap;
+  }
+  .chip.good { color: var(--good); background: var(--good-soft); }
+  .chip.mid { color: var(--mid); background: var(--mid-soft); }
+  .chip.high { color: var(--high); background: var(--high-soft); }
+  .chip.info { color: var(--info); background: var(--info-soft); }
+  .interpretation { margin: 8px 0 0; color: #384152; font-size: .9rem; }
+  details { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+  summary { cursor: pointer; color: var(--accent); font-weight: 650; font-size: .87rem; }
+  details p, details ul { color: var(--muted); font-size: .82rem; margin: 8px 0 0; }
+  details ul { padding-left: 18px; }
+  code.formula {
+    display: block;
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 10px;
+    color: #26364e;
+    margin-top: 8px;
+    white-space: normal;
+  }
+
+  .warning-box {
+    display: none;
+    margin-top: 14px;
+    background: #fff8e9;
+    border: 1px solid #ead9a8;
+    color: #76570f;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: .86rem;
+  }
+  .warning-box.visible { display: block; }
+  .warning-box ul { margin: 6px 0 0; padding-left: 18px; }
+
+  footer {
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: .8rem;
+  }
+  footer .disclaimer {
+    background: #f0f3f7;
+    border: 1px solid var(--line);
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #4f5b6e;
+    margin-bottom: 10px;
+  }
+  .mini-note { margin-top: 8px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    header { align-items: stretch; }
+  }
+  @media (max-width: 640px) {
+    .app { padding: 18px 12px 32px; }
+    header { flex-direction: column; }
+    .clear-btn { width: 100%; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .control-row { grid-template-columns: 1fr; }
+    .unit-select { min-width: 0; }
+    .panel { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <div>
+      <h1>Calculadora clínica de diabetes</h1>
+      <p class="subtitle">FINDRISC, TG/HDL, TyG, FIB-4 e IMC en una única herramienta local para uso profesional y educativo.</p>
+    </div>
+    <button id="clearBtn" class="clear-btn" type="button">Limpiar datos</button>
+  </header>
+
+  <div class="privacy" role="note">
+    <strong>Privacidad:</strong> los datos se procesan exclusivamente en este dispositivo y no se transmiten ni almacenan.
+  </div>
+
+  <div class="layout">
+    <div class="stack">
+      <section class="panel" aria-labelledby="patientTitle">
+        <h2 id="patientTitle">Datos del paciente</h2>
+        <p class="panel-intro">Introduce solo los datos necesarios. La edad, el sexo, el peso y la talla se reutilizan automáticamente.</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="sex">Sexo (para puntos de corte FINDRISC)</label>
+            <select id="sex">
+              <option value="">Seleccionar</option>
+              <option value="male">Hombre</option>
+              <option value="female">Mujer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="age">Edad</label>
+            <div class="control-row"><input id="age" inputmode="numeric" autocomplete="off" placeholder="p. ej., 58" aria-describedby="ageHelp"><span style="align-self:center;color:var(--muted);font-size:.86rem">años</span></div>
+            <small id="ageHelp"></small>
+          </div>
+          <div class="field">
+            <label for="weight">Peso</label>
+            <div class="control-row"><input id="weight" inputmode="decimal" autocomplete="off" placeholder="p. ej., 80"><span style="align-self:center;color:var(--muted);font-size:.86rem">kg</span></div>
+            <small id="weightHelp"></small>
+          </div>
+          <div class="field">
+            <label for="height">Talla</label>
+            <div class="control-row"><input id="height" inputmode="decimal" autocomplete="off" placeholder="p. ej., 175"><span style="align-self:center;color:var(--muted);font-size:.86rem">cm</span></div>
+            <small id="heightHelp"></small>
+          </div>
+          <div class="field">
+            <label for="waist">Perímetro abdominal</label>
+            <div class="control-row"><input id="waist" inputmode="decimal" autocomplete="off" placeholder="p. ej., 98"><span style="align-self:center;color:var(--muted);font-size:.86rem">cm</span></div>
+            <small id="waistHelp"></small>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="labsTitle">
+        <h2 id="labsTitle">Analítica</h2>
+        <p class="panel-intro">Selecciona las unidades utilizadas en el informe. Las conversiones se realizan internamente sin redondeo previo.</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="glucose">Glucosa</label>
+            <div class="control-row">
+              <input id="glucose" inputmode="decimal" autocomplete="off" placeholder="p. ej., 100">
+              <select id="glucoseUnit" class="unit-select" aria-label="Unidad de glucosa"><option value="mgdl">mg/dL</option><option value="mmol">mmol/L</option></select>
+            </div>
+            <small id="glucoseHelp"></small>
+          </div>
+          <div class="field">
+            <label for="tg">Triglicéridos</label>
+            <div class="control-row">
+              <input id="tg" inputmode="decimal" autocomplete="off" placeholder="p. ej., 150">
+              <select id="tgUnit" class="unit-select" aria-label="Unidad de triglicéridos"><option value="mgdl">mg/dL</option><option value="mmol">mmol/L</option></select>
+            </div>
+            <small id="tgHelp"></small>
+          </div>
+          <div class="field">
+            <label for="hdl">Colesterol HDL</label>
+            <div class="control-row">
+              <input id="hdl" inputmode="decimal" autocomplete="off" placeholder="p. ej., 50">
+              <select id="hdlUnit" class="unit-select" aria-label="Unidad de HDL"><option value="mgdl">mg/dL</option><option value="mmol">mmol/L</option></select>
+            </div>
+            <small id="hdlHelp"></small>
+          </div>
+          <div class="field">
+            <label for="fasting">¿Glucosa y TG son en ayunas?</label>
+            <select id="fasting"><option value="">Seleccionar</option><option value="yes">Sí</option><option value="no">No</option></select>
+            <small>La fórmula TyG estándar requiere glucosa y triglicéridos en ayunas.</small>
+          </div>
+          <div class="field">
+            <label for="ast">AST (GOT)</label>
+            <div class="control-row"><input id="ast" inputmode="decimal" autocomplete="off" placeholder="p. ej., 40"><span style="align-self:center;color:var(--muted);font-size:.86rem">U/L</span></div>
+            <small id="astHelp"></small>
+          </div>
+          <div class="field">
+            <label for="alt">ALT (GPT)</label>
+            <div class="control-row"><input id="alt" inputmode="decimal" autocomplete="off" placeholder="p. ej., 50"><span style="align-self:center;color:var(--muted);font-size:.86rem">U/L</span></div>
+            <small id="altHelp"></small>
+          </div>
+          <div class="field">
+            <label for="platelets">Plaquetas</label>
+            <div class="control-row"><input id="platelets" inputmode="decimal" autocomplete="off" placeholder="p. ej., 200"><span style="align-self:center;color:var(--muted);font-size:.86rem">×10⁹/L</span></div>
+            <small id="plateletsHelp"></small>
+          </div>
+        </div>
+        <div id="dataWarnings" class="warning-box" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="findriskTitle">
+        <h2 id="findriskTitle">FINDRISC · preguntas adicionales</h2>
+        <p class="panel-intro">El IMC se obtiene automáticamente a partir de peso y talla; la edad, sexo y cintura se toman de los datos del paciente.</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="activity">Actividad física ≥30 min/día</label>
+            <select id="activity"><option value="">Seleccionar</option><option value="yes">Sí</option><option value="no">No</option></select>
+          </div>
+          <div class="field">
+            <label for="produce">Frutas, verduras u hortalizas a diario</label>
+            <select id="produce"><option value="">Seleccionar</option><option value="yes">Sí</option><option value="no">No</option></select>
+          </div>
+          <div class="field">
+            <label for="bpMeds">Tratamiento antihipertensivo</label>
+            <select id="bpMeds"><option value="">Seleccionar</option><option value="no">No</option><option value="yes">Sí</option></select>
+          </div>
+          <div class="field">
+            <label for="highGlucose">Antecedente de glucemia elevada</label>
+            <select id="highGlucose"><option value="">Seleccionar</option><option value="no">No</option><option value="yes">Sí</option></select>
+          </div>
+          <div class="field">
+            <label for="family">Antecedentes familiares de diabetes</label>
+            <select id="family">
+              <option value="">Seleccionar</option>
+              <option value="none">No</option>
+              <option value="extended">Abuelos, tíos o primos hermanos</option>
+              <option value="first">Padres, hermanos o hijos</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="stack" aria-labelledby="resultsHeading">
+      <div class="results-title">
+        <h2 id="resultsHeading">Resultados</h2>
+        <span>Actualización automática</span>
+      </div>
+
+      <article class="result-card" id="bmiCard">
+        <div class="result-top"><h3>IMC</h3><span id="bmiChip" class="chip info">Pendiente</span></div>
+        <div id="bmiValue" class="value pending">Introduce peso y talla</div>
+        <p id="bmiText" class="interpretation">El IMC se utilizará también para FINDRISC.</p>
+        <details><summary>¿Cómo se calcula?</summary><code class="formula">IMC = peso (kg) / talla² (m)</code><p>Categorías estándar de adultos: bajo peso &lt;18,5; normopeso 18,5–24,9; sobrepeso 25,0–29,9; obesidad ≥30 kg/m².</p></details>
+      </article>
+
+      <article class="result-card" id="findriskCard">
+        <div class="result-top"><h3>FINDRISC</h3><span id="findriskChip" class="chip info">Pendiente</span></div>
+        <div id="findriskValue" class="value pending">Faltan datos</div>
+        <p id="findriskText" class="interpretation">Completa los ocho componentes del cuestionario.</p>
+        <details><summary>¿Cómo se calcula?</summary><p>Puntuación total de 0 a 26 según edad, IMC, cintura, actividad física, consumo diario de fruta/verdura, tratamiento antihipertensivo, antecedente de glucemia elevada y antecedentes familiares.</p><ul><li>&lt;7: riesgo bajo</li><li>7–11: ligeramente elevado</li><li>12–14: moderado</li><li>15–20: alto</li><li>&gt;20: muy alto</li></ul></details>
+      </article>
+
+      <article class="result-card" id="ratioCard">
+        <div class="result-top"><h3>TG/HDL</h3><span id="ratioChip" class="chip info">Orientativo</span></div>
+        <div id="ratioValue" class="value pending">Faltan TG y HDL</div>
+        <p id="ratioText" class="interpretation">No existe un punto de corte diagnóstico universal aplicable a todas las poblaciones.</p>
+        <details><summary>¿Cómo se calcula?</summary><code class="formula">TG/HDL = triglicéridos / colesterol HDL</code><p>El cálculo se realiza internamente en mg/dL. Valores más elevados se han asociado con insulinorresistencia y perfil lipídico aterogénico, pero los puntos de corte varían entre estudios, sexo y población.</p></details>
+      </article>
+
+      <article class="result-card" id="tygCard">
+        <div class="result-top"><h3>Índice TyG</h3><span id="tygChip" class="chip info">Orientativo</span></div>
+        <div id="tygValue" class="value pending">Faltan datos</div>
+        <p id="tygText" class="interpretation">Requiere glucosa y triglicéridos en ayunas.</p>
+        <details><summary>¿Cómo se calcula?</summary><code class="formula">TyG = ln[(TG en ayunas [mg/dL] × glucosa en ayunas [mg/dL]) / 2]</code><p>Se utiliza logaritmo natural. Es un marcador indirecto de insulinorresistencia; no se usa aquí un punto de corte diagnóstico universal.</p></details>
+      </article>
+
+      <article class="result-card" id="fib4Card">
+        <div class="result-top"><h3>FIB-4</h3><span id="fib4Chip" class="chip info">Pendiente</span></div>
+        <div id="fib4Value" class="value pending">Faltan datos</div>
+        <p id="fib4Text" class="interpretation">Introduce edad, AST, ALT y plaquetas.</p>
+        <details><summary>¿Cómo se calcula?</summary><code class="formula">FIB-4 = [edad × AST] / [plaquetas × √ALT]</code><p>Para 35–64 años: &lt;1,3 bajo; 1,3–2,67 intermedio; &gt;2,67 elevado. En ≥65 años se usa &lt;2,0 como umbral de bajo riesgo. En &lt;35 años el rendimiento es limitado.</p></details>
+      </article>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="disclaimer"><strong>Uso profesional:</strong> herramienta de apoyo y finalidad educativa dirigida a profesionales sanitarios. Los resultados deben interpretarse en el contexto clínico del paciente y no sustituyen el juicio clínico, las pruebas diagnósticas ni las guías vigentes.</div>
+    <div>La herramienta distingue entre cálculo matemático, estratificación de riesgo validada e interpretación orientativa. No genera recomendaciones terapéuticas.</div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const ids = ['sex','age','weight','height','waist','glucose','glucoseUnit','tg','tgUnit','hdl','hdlUnit','fasting','ast','alt','platelets','activity','produce','bpMeds','highGlucose','family'];
+
+  function parseNum(id) {
+    const raw = $(id).value.trim();
+    if (!raw) return null;
+    const normalized = raw.replace(',', '.');
+    if (!/^[-+]?\d*(\.\d*)?$/.test(normalized) || normalized === '.' || normalized === '+' || normalized === '-') return NaN;
+    return Number(normalized);
+  }
+
+  function fmt(value, decimals) {
+    return value.toLocaleString('es-ES', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  }
+
+  function setHelp(id, text = '', kind = '') {
+    const el = $(id + 'Help');
+    if (!el) return;
+    el.textContent = text;
+    el.className = kind;
+  }
+
+  function validatePositive(id, label, hardMax = Infinity) {
+    const v = parseNum(id);
+    setHelp(id);
+    if (v === null) return { ok: false, missing: true, value: null };
+    if (!Number.isFinite(v)) {
+      setHelp(id, 'Introduce un valor numérico válido.', 'error');
+      return { ok: false, value: null };
+    }
+    if (v <= 0 || v > hardMax) {
+      setHelp(id, `Revisa ${label}: el valor no es válido.`, 'error');
+      return { ok: false, value: v };
+    }
+    return { ok: true, value: v };
+  }
+
+  function toMgDl(value, unit, analyte) {
+    if (unit === 'mgdl') return value;
+    if (analyte === 'glucose') return value * 18.018;
+    if (analyte === 'tg') return value * 88.57;
+    if (analyte === 'hdl') return value * 38.67;
+    return value;
+  }
+
+  function setResult(prefix, valueText, chipText, chipClass, interpretation, pending = false) {
+    const val = $(prefix + 'Value');
+    const chip = $(prefix + 'Chip');
+    const text = $(prefix + 'Text');
+    val.innerHTML = valueText;
+    val.className = pending ? 'value pending' : 'value';
+    chip.textContent = chipText;
+    chip.className = 'chip ' + chipClass;
+    text.textContent = interpretation;
+  }
+
+  function missingText(names) {
+    if (!names.length) return '';
+    if (names.length === 1) return `Falta ${names[0]}`;
+    if (names.length === 2) return `Faltan ${names[0]} y ${names[1]}`;
+    return `Faltan ${names.slice(0,-1).join(', ')} y ${names[names.length-1]}`;
+  }
+
+  function calculateBMI() {
+    const w = validatePositive('weight', 'el peso', 700);
+    const h = validatePositive('height', 'la talla', 300);
+    if (!w.ok || !h.ok) {
+      const miss = [];
+      if (w.missing) miss.push('peso');
+      if (h.missing) miss.push('talla');
+      setResult('bmi', miss.length ? missingText(miss) : 'Revisa los datos', 'Pendiente', 'info', 'El IMC se utilizará también para FINDRISC.', true);
+      return null;
+    }
+    const meters = h.value / 100;
+    const bmi = w.value / (meters * meters);
+    let category, cls;
+    if (bmi < 18.5) { category = 'Bajo peso'; cls = 'mid'; }
+    else if (bmi < 25) { category = 'Normopeso'; cls = 'good'; }
+    else if (bmi < 30) { category = 'Sobrepeso'; cls = 'mid'; }
+    else { category = 'Obesidad'; cls = 'high'; }
+    setResult('bmi', `${fmt(bmi,1)}<span class="unit">kg/m²</span>`, category, cls, `Clasificación estándar del IMC en adultos: ${category.toLowerCase()}.`);
+    return bmi;
+  }
+
+  function calculateRatio() {
+    const tg = validatePositive('tg', 'los triglicéridos', 10000);
+    const hdl = validatePositive('hdl', 'el HDL', 1000);
+    if (!tg.ok || !hdl.ok) {
+      const miss = [];
+      if (tg.missing) miss.push('TG');
+      if (hdl.missing) miss.push('HDL');
+      setResult('ratio', miss.length ? missingText(miss) : 'Revisa los datos', 'Orientativo', 'info', 'No existe un punto de corte diagnóstico universal aplicable a todas las poblaciones.', true);
+      return;
+    }
+    const tgMg = toMgDl(tg.value, $('tgUnit').value, 'tg');
+    const hdlMg = toMgDl(hdl.value, $('hdlUnit').value, 'hdl');
+    const ratio = tgMg / hdlMg;
+    setResult('ratio', fmt(ratio,2), 'Orientativo', 'info', 'Un valor mayor se ha asociado con mayor insulinorresistencia y perfil lipídico aterogénico, pero no diagnostica insulinorresistencia.');
+  }
+
+  function calculateTyG() {
+    const tg = validatePositive('tg', 'los triglicéridos', 10000);
+    const glu = validatePositive('glucose', 'la glucosa', 3000);
+    const fasting = $('fasting').value;
+    const miss = [];
+    if (tg.missing) miss.push('TG');
+    if (glu.missing) miss.push('glucosa');
+    if (!fasting) miss.push('confirmación de ayuno');
+    if (!tg.ok || !glu.ok || !fasting) {
+      setResult('tyg', miss.length ? missingText(miss) : 'Revisa los datos', 'Orientativo', 'info', 'La fórmula estándar requiere glucosa y triglicéridos en ayunas.', true);
+      return;
+    }
+    if (fasting === 'no') {
+      setResult('tyg', 'No interpretable', 'Ayuno requerido', 'mid', 'El TyG estándar requiere glucosa y triglicéridos en ayunas. No se calcula para evitar una interpretación inadecuada.', true);
+      return;
+    }
+    const tgMg = toMgDl(tg.value, $('tgUnit').value, 'tg');
+    const gluMg = toMgDl(glu.value, $('glucoseUnit').value, 'glucose');
+    const tyg = Math.log((tgMg * gluMg) / 2);
+    setResult('tyg', fmt(tyg,2), 'Orientativo', 'info', 'Marcador indirecto de insulinorresistencia. Valores mayores indican mayor alteración metabólica en estudios poblacionales, sin un umbral diagnóstico universal.');
+  }
+
+  function calculateFib4() {
+    const age = validatePositive('age', 'la edad', 130);
+    const ast = validatePositive('ast', 'AST', 10000);
+    const alt = validatePositive('alt', 'ALT', 10000);
+    const pl = validatePositive('platelets', 'las plaquetas', 5000);
+    const miss = [];
+    if (age.missing) miss.push('edad');
+    if (ast.missing) miss.push('AST');
+    if (alt.missing) miss.push('ALT');
+    if (pl.missing) miss.push('plaquetas');
+    if (!age.ok || !ast.ok || !alt.ok || !pl.ok) {
+      setResult('fib4', miss.length ? missingText(miss) : 'Revisa los datos', 'Pendiente', 'info', 'Introduce edad, AST, ALT y plaquetas.', true);
+      return;
+    }
+    const fib4 = (age.value * ast.value) / (pl.value * Math.sqrt(alt.value));
+    if (age.value < 18) {
+      setResult('fib4', fmt(fib4,2), 'No interpretar', 'mid', 'FIB-4 está planteado para adultos; no debe interpretarse con estos umbrales en menores de 18 años.');
+      return;
+    }
+    if (age.value < 35) {
+      setResult('fib4', fmt(fib4,2), 'Precaución', 'mid', 'En menores de 35 años el rendimiento de FIB-4 es limitado; el resultado debe interpretarse con precaución.');
+      return;
+    }
+    const lowCut = age.value >= 65 ? 2.0 : 1.3;
+    let chip, cls, text;
+    if (fib4 < lowCut) {
+      chip = 'Riesgo bajo'; cls = 'good';
+      text = `Por debajo del umbral de bajo riesgo (${fmt(lowCut,1)} para este grupo de edad). No excluye enfermedad hepática si la sospecha clínica es alta.`;
+    } else if (fib4 <= 2.67) {
+      chip = 'Riesgo intermedio'; cls = 'mid';
+      text = 'Zona intermedia. En personas con diabetes o prediabetes puede justificar una segunda evaluación no invasiva según el contexto clínico y las guías vigentes.';
+    } else {
+      chip = 'Riesgo elevado'; cls = 'high';
+      text = 'Valor por encima de 2,67, asociado a mayor probabilidad de fibrosis avanzada. No constituye un diagnóstico definitivo.';
+    }
+    setResult('fib4', fmt(fib4,2), chip, cls, text);
+  }
+
+  function calculateFindrisk(bmi) {
+    const sex = $('sex').value;
+    const age = validatePositive('age', 'la edad', 130);
+    const waist = validatePositive('waist', 'el perímetro abdominal', 400);
+    const activity = $('activity').value;
+    const produce = $('produce').value;
+    const bp = $('bpMeds').value;
+    const glucoseHistory = $('highGlucose').value;
+    const family = $('family').value;
+
+    const miss = [];
+    if (!sex) miss.push('sexo');
+    if (age.missing) miss.push('edad');
+    if (bmi === null) miss.push('peso/talla');
+    if (waist.missing) miss.push('cintura');
+    if (!activity) miss.push('actividad física');
+    if (!produce) miss.push('fruta/verdura');
+    if (!bp) miss.push('tratamiento antihipertensivo');
+    if (!glucoseHistory) miss.push('glucemia elevada previa');
+    if (!family) miss.push('antecedentes familiares');
+
+    if (miss.length || !age.ok || !waist.ok || bmi === null) {
+      setResult('findrisk', miss.length ? missingText(miss) : 'Revisa los datos', 'Pendiente', 'info', 'Completa los ocho componentes del cuestionario.', true);
+      return;
+    }
+
+    let score = 0;
+    if (age.value < 45) score += 0;
+    else if (age.value <= 54) score += 2;
+    else if (age.value <= 64) score += 3;
+    else score += 4;
+
+    if (bmi < 25) score += 0;
+    else if (bmi <= 30) score += 1;
+    else score += 3;
+
+    if (sex === 'male') {
+      if (waist.value < 94) score += 0;
+      else if (waist.value <= 102) score += 3;
+      else score += 4;
+    } else {
+      if (waist.value < 80) score += 0;
+      else if (waist.value <= 88) score += 3;
+      else score += 4;
+    }
+
+    if (activity === 'no') score += 2;
+    if (produce === 'no') score += 1;
+    if (bp === 'yes') score += 2;
+    if (glucoseHistory === 'yes') score += 5;
+    if (family === 'extended') score += 3;
+    if (family === 'first') score += 5;
+
+    let chip, cls, text;
+    if (score < 7) { chip = 'Riesgo bajo'; cls = 'good'; text = 'Riesgo aproximado de desarrollar diabetes a 10 años: 1 %.'; }
+    else if (score <= 11) { chip = 'Ligeramente elevado'; cls = 'good'; text = 'Riesgo aproximado de desarrollar diabetes a 10 años: 4 %.'; }
+    else if (score <= 14) { chip = 'Riesgo moderado'; cls = 'mid'; text = 'Riesgo aproximado de desarrollar diabetes a 10 años: 17 %.'; }
+    else if (score <= 20) { chip = 'Riesgo alto'; cls = 'high'; text = 'Riesgo aproximado de desarrollar diabetes a 10 años: 33 %.'; }
+    else { chip = 'Riesgo muy alto'; cls = 'high'; text = 'Riesgo aproximado de desarrollar diabetes a 10 años: 50 %.'; }
+
+    setResult('findrisk', `${score}<span class="unit">/ 26 puntos</span>`, chip, cls, text);
+  }
+
+  function showExtremeWarnings() {
+    const warnings = [];
+    const age = parseNum('age');
+    const weight = parseNum('weight');
+    const height = parseNum('height');
+    const waist = parseNum('waist');
+    const glucose = parseNum('glucose');
+    const tg = parseNum('tg');
+    const hdl = parseNum('hdl');
+    const ast = parseNum('ast');
+    const alt = parseNum('alt');
+    const pl = parseNum('platelets');
+
+    if (Number.isFinite(age) && age > 105) warnings.push('Edad muy elevada: comprueba el dato.');
+    if (Number.isFinite(weight) && (weight < 35 || weight > 300)) warnings.push('Peso extremo: comprueba el dato y la unidad.');
+    if (Number.isFinite(height) && (height < 120 || height > 220)) warnings.push('Talla extrema: comprueba el dato y que esté en cm.');
+    if (Number.isFinite(waist) && (waist < 50 || waist > 200)) warnings.push('Perímetro abdominal extremo: comprueba el dato.');
+
+    if (Number.isFinite(glucose) && glucose > 0) {
+      const gMg = toMgDl(glucose, $('glucoseUnit').value, 'glucose');
+      if (gMg < 40 || gMg > 600) warnings.push('Glucosa extrema: comprueba valor y unidad.');
+    }
+    if (Number.isFinite(tg) && tg > 0) {
+      const tMg = toMgDl(tg, $('tgUnit').value, 'tg');
+      if (tMg > 1500) warnings.push('Triglicéridos muy elevados: comprueba valor y unidad.');
+    }
+    if (Number.isFinite(hdl) && hdl > 0) {
+      const hMg = toMgDl(hdl, $('hdlUnit').value, 'hdl');
+      if (hMg < 10 || hMg > 150) warnings.push('HDL extremo: comprueba valor y unidad.');
+    }
+    if (Number.isFinite(ast) && ast > 1000) warnings.push('AST muy elevada: comprueba el dato.');
+    if (Number.isFinite(alt) && alt > 1000) warnings.push('ALT muy elevada: comprueba el dato.');
+    if (Number.isFinite(pl) && (pl < 20 || pl > 1000)) warnings.push('Plaquetas en un rango extremo: comprueba el dato y la unidad ×10⁹/L.');
+
+    const box = $('dataWarnings');
+    if (!warnings.length) {
+      box.className = 'warning-box';
+      box.innerHTML = '';
+    } else {
+      box.className = 'warning-box visible';
+      box.innerHTML = '<strong>Comprueba los siguientes datos:</strong><ul>' + warnings.map(w => `<li>${w}</li>`).join('') + '</ul>';
+    }
+  }
+
+  function recalc() {
+    const bmi = calculateBMI();
+    calculateRatio();
+    calculateTyG();
+    calculateFib4();
+    calculateFindrisk(bmi);
+    showExtremeWarnings();
+  }
+
+  ids.forEach(id => {
+    $(id).addEventListener('input', recalc);
+    $(id).addEventListener('change', recalc);
+  });
+
+  $('clearBtn').addEventListener('click', () => {
+    ids.forEach(id => {
+      const el = $(id);
+      if (el.tagName === 'SELECT') el.selectedIndex = 0;
+      else el.value = '';
+    });
+    ['age','weight','height','waist','glucose','tg','hdl','ast','alt','platelets'].forEach(id => setHelp(id));
+    recalc();
+    $('sex').focus();
+  });
+
+  recalc();
+})();
+</script>
+</body>
+</html>
