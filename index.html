@@ -1,153 +1,155 @@
 <!doctype html>
+
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Materiales del taller de IA</title>
-<meta name="author" content="Liliana Bilbie Lupchian">
-<meta name="copyright" content="© 2026 Liliana Bilbie Lupchian">
+  <title>Materiales del taller de IA</title>
+  <meta name="author" content="Liliana Bilbie Lupchian">
+  <meta name="copyright" content="© 2026 Liliana Bilbie Lupchian">
 
-<style>
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  background:#f8fafc;
-  color:#0f172a
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
 
-header{
-  padding:46px 20px;
-  background:linear-gradient(135deg,#0f766e,#0ea5a4);
-  color:white;
-  text-align:center
-}
+    header {
+      padding: 46px 20px;
+      background: linear-gradient(135deg, #0f766e, #0ea5a4);
+      color: white;
+      text-align: center;
+    }
 
-h1{
-  margin:0 0 8px;
-  font-size:38px
-}
+    h1 {
+      margin: 0 0 8px;
+      font-size: 38px;
+    }
 
-header p{
-  margin:0;
-  font-size:18px;
-  opacity:.94
-}
+    header p {
+      margin: 0;
+      font-size: 18px;
+      opacity: 0.94;
+    }
 
-main{
-  max-width:1180px;
-  margin:auto;
-  padding:28px 16px 60px
-}
+    main {
+      max-width: 1180px;
+      margin: auto;
+      padding: 28px 16px 60px;
+    }
 
-.intro{
-  font-size:16px;
-  color:#475569;
-  text-align:center;
-  margin-bottom:24px
-}
+    .intro {
+      font-size: 16px;
+      color: #475569;
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
 
-.card{
-  background:white;
-  border:1px solid #dbe4ea;
-  border-radius:22px;
-  padding:22px
-}
+    .card {
+      background: white;
+      border: 1px solid #dbe4ea;
+      border-radius: 22px;
+      padding: 22px;
+    }
 
-.card.featured{
-  border:2px solid #0f766e;
-  background:#f0fdfa
-}
+    .card.featured {
+      border: 2px solid #0f766e;
+      background: #f0fdfa;
+    }
 
-.card h2{
-  margin:0 0 7px;
-  color:#0f766e
-}
+    .card h2 {
+      margin: 0 0 7px;
+      color: #0f766e;
+    }
 
-.card p{
-  color:#475569;
-  line-height:1.5
-}
+    .card p {
+      color: #475569;
+      line-height: 1.5;
+    }
 
-.small{
-  font-size:13px;
-  color:#64748b
-}
+    .small {
+      font-size: 13px;
+      color: #64748b;
+    }
 
-.badge{
-  display:inline-block;
-  margin-bottom:12px;
-  padding:5px 9px;
-  border-radius:999px;
-  background:#ccfbf1;
-  color:#0f766e;
-  font-size:12px;
-  font-weight:800
-}
+    .badge {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #ccfbf1;
+      color: #0f766e;
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-.buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin-top:18px
-}
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
 
-a{
-  display:inline-block;
-  text-decoration:none;
-  border-radius:12px;
-  padding:11px 14px;
-  font-weight:800
-}
+    a {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 800;
+    }
 
-.open{
-  background:#0f766e;
-  color:white
-}
+    .open {
+      background: #0f766e;
+      color: white;
+    }
 
-.download{
-  border:1px solid #99f6e4;
-  color:#0f766e;
-  background:white
-}
+    .download {
+      border: 1px solid #99f6e4;
+      color: #0f766e;
+      background: white;
+    }
 
-.note{
-  margin-top:25px;
-  padding:16px;
-  border-radius:16px;
-  background:#fff7ed;
-  border:1px solid #fdba74;
-  color:#7c2d12;
-  font-size:14px;
-  line-height:1.45
-}
+    .note {
+      margin-top: 25px;
+      padding: 16px;
+      border-radius: 16px;
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      color: #7c2d12;
+      font-size: 14px;
+      line-height: 1.45;
+    }
 
-.author{
-  margin-top:28px;
-  text-align:center;
-  color:#64748b;
-  font-size:13px;
-  line-height:1.5
-}
+    .author {
+      margin-top: 28px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-@media(max-width:900px){
-  .grid{
-    grid-template-columns:1fr
-  }
-}
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-@media(max-width:700px){
-  h1{
-    font-size:30px
-  }
-}
-</style>
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -159,19 +161,22 @@ a{
 
 <main>
 
-<p class="intro">
-Aquí encontrarás los casos de uso trabajados durante el taller y varias herramientas prácticas.
-Puedes abrirlos directamente en el navegador.
-</p>
+  <p class="intro">
+    Aquí encontrarás los casos de uso trabajados durante el taller y varias
+    herramientas prácticas. Puedes abrirlos directamente en el navegador.
+  </p>
 
-<div class="grid">
-  <section class="card">
+  <div class="grid">
+
+```
+<!-- CALCULADORA DE DIABETES -->
+<section class="card featured">
   <span class="badge">NUEVA HERRAMIENTA</span>
   <h2>Calculadora clínica de diabetes</h2>
 
   <p>
-  FINDRISC, TG/HDL, índice TyG, FIB-4 e IMC en una única herramienta
-  diseñada para uso rápido en consulta.
+    FINDRISC, TG/HDL, índice TyG, FIB-4 e IMC en una única herramienta
+    diseñada para uso rápido en consulta.
   </p>
 
   <div class="buttons">
@@ -185,15 +190,17 @@ Puedes abrirlos directamente en el navegador.
   </div>
 </section>
 
+
+<!-- CASOS DEL TALLER -->
 <section class="card featured">
   <span class="badge">CASOS DEL TALLER</span>
   <h2>IA en consulta</h2>
 
   <p>
-  Casos prácticos paso a paso: qué opción utilizar, qué prompt escribir
-  y ejemplos del resultado final. Incluye consulta compleja, búsqueda,
-  investigación avanzada, Work, informes médicos, revisión de medicación,
-  material para pacientes y creación de herramientas.
+    Casos prácticos paso a paso: qué opción utilizar, qué prompt escribir
+    y ejemplos del resultado final. Incluye consulta compleja, búsqueda,
+    investigación avanzada, Work, informes médicos, revisión de medicación,
+    material para pacientes y creación de herramientas.
   </p>
 
   <div class="buttons">
@@ -204,12 +211,13 @@ Puedes abrirlos directamente en el navegador.
 </section>
 
 
+<!-- AMPA -->
 <section class="card">
   <h2>AMPA Fácil</h2>
 
   <p>
-  Registro educativo de automedidas domiciliarias de presión arterial:
-  dos lecturas por sesión, medias, días registrados, CSV e informe imprimible.
+    Registro educativo de automedidas domiciliarias de presión arterial:
+    dos lecturas por sesión, medias, días registrados, CSV e informe imprimible.
   </p>
 
   <div class="buttons">
@@ -224,12 +232,13 @@ Puedes abrirlos directamente en el navegador.
 </section>
 
 
+<!-- CALCULADORAS AP -->
 <section class="card">
   <h2>Calculadoras AP</h2>
 
   <p>
-  IMC, cintura/talla, FIB-4, FLI, HSI, VAI y TyG en un único archivo HTML
-  que también funciona sin conexión.
+    IMC, cintura/talla, FIB-4, FLI, HSI, VAI y TyG en un único archivo HTML
+    que también funciona sin conexión.
   </p>
 
   <div class="buttons">
@@ -244,19 +253,20 @@ Puedes abrirlos directamente en el navegador.
 </section>
 
 
+<!-- EXPLORACIÓN MUSCULOESQUELÉTICA -->
 <section class="card">
   <span class="badge">VERSIÓN DE PRUEBA</span>
   <h2>🦴 Exploración AP · Musculoesquelético</h2>
 
   <p>
-  Herramienta para estructurar la anamnesis y la exploración
-  musculoesquelética y generar un texto clínico listo para revisar
-  y copiar en la historia.
+    Herramienta para estructurar la anamnesis y la exploración
+    musculoesquelética y generar un texto clínico listo para revisar
+    y copiar en la historia.
   </p>
 
   <p class="small">
-  Lumbar · Cervical · Hombro · Codo · Muñeca y mano ·
-  Cadera · Rodilla · Tobillo y pie.
+    Lumbar · Cervical · Hombro · Codo · Muñeca y mano ·
+    Cadera · Rodilla · Tobillo y pie.
   </p>
 
   <div class="buttons">
@@ -266,27 +276,27 @@ Puedes abrirlos directamente en el navegador.
   </div>
 
   <p class="small">
-  En validación clínica.
+    En validación clínica.
   </p>
 </section>
+```
 
-</div>
+  </div>
 
-<div class="note">
-  <b>Uso docente.</b>
-  Los materiales y herramientas son ejemplos educativos.
-  No son productos sanitarios certificados y los resultados deben revisarse
-  antes de utilizarlos en la práctica clínica.
-</div>
+  <div class="note">
+    <b>Uso docente.</b>
+    Los materiales y herramientas son ejemplos educativos.
+    No son productos sanitarios certificados y los resultados deben revisarse
+    antes de utilizarlos en la práctica clínica.
+  </div>
 
-
-<div class="author">
-  <b>© 2026 Liliana Bilbie Lupchian</b><br>
-  Material docente para uso personal de los asistentes.<br>
-  Se permite utilizar los prompts y ejemplos para la práctica personal.
-  No se autoriza la redistribución o reutilización del conjunto como material docente
-  sin permiso de la autora.
-</div>
+  <div class="author">
+    <b>© 2026 Liliana Bilbie Lupchian</b><br>
+    Material docente para uso personal de los asistentes al taller de IA.<br>
+    Se permite utilizar los prompts y ejemplos para la práctica personal.
+    No se autoriza la redistribución o reutilización del conjunto como material docente
+    sin permiso de la autora.
+  </div>
 
 </main>
 
